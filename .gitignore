@@ -14,4 +14,5 @@ kotlin-js-store
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+deploy/volumes
 
