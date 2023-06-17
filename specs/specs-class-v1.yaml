@@ -1,0 +1,459 @@
+openapi: 3.0.4
+info:
+  title: "DoYoga ${VERSION_APP}"
+  description: This is a place where students and teachers meat each other
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: class
+    description: Класс для занятий
+paths:
+  /class/create:
+    post:
+      tags:
+        - class
+      summary: Create class
+      operationId: classCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassCreateResponse'
+  /class/read:
+    post:
+      tags:
+        - class
+      summary: Read class info
+      operationId: classRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassReadResponse'
+  /class/update:
+    post:
+      tags:
+        - class
+      summary: Update class
+      operationId: classUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassUpdateResponse'
+  /class/delete:
+    post:
+      tags:
+        - class
+      summary: Delete class
+      operationId: classDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassDeleteResponse'
+  /class/search:
+    post:
+      tags:
+        - class
+      summary: Search class
+      operationId: classSearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSearchResponse'
+  /class/sign_up:
+    post:
+      tags:
+        - class
+      summary: Sign up into class
+      operationId: classSignUp
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSignUpRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSignUpResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/ClassCreateRequest'
+          read:   '#/components/schemas/ClassReadRequest'
+          update: '#/components/schemas/ClassUpdateRequest'
+          delete: '#/components/schemas/ClassDeleteRequest'
+          search: '#/components/schemas/ClassSearchRequest'
+          sign_up: '#/components/schemas/ClassSignUpRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/ClassCreateResponse'
+          read:   '#/components/schemas/ClassReadResponse'
+          update: '#/components/schemas/ClassUpdateResponse'
+          delete: '#/components/schemas/ClassDeleteResponse'
+          search: '#/components/schemas/ClassSearchResponse'
+          sign_up: '#/components/schemas/ClassSignUpResponse'
+          init: '#/components/schemas/ClassInitResponse'
+
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    ClassId:
+      type: string
+      description: Идентификатор класса
+    ClassLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseClass:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        officeAddress:
+          type: string
+          description: Адрес офиса
+        trainer:
+          type: string
+          description: ФИО тренера
+        students:
+          description: Список студентов, записавшихся в класс
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/UserId'
+        time:
+          type: string
+          format: date-time
+          description: Время проведения занятия
+        visibility:
+          $ref: '#/components/schemas/ClassVisibility'
+
+    ClassVisibility:
+      type: string
+      description: 'Тип видимости класса. Возможные значения: видит только владелец, только зарегистрированный в системе пользователь, видимо всем'
+      enum:
+        - ownerOnly
+        - registeredOnly
+        - public
+
+    ClassInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    ClassCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseClass'
+
+    ClassCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ClassRequestDebug'
+        - type: object
+          properties:
+            class:
+              $ref: '#/components/schemas/ClassCreateObject'
+
+    ClassReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ClassId'
+
+    ClassReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ClassRequestDebug'
+        - type: object
+          properties:
+            class:
+              $ref: '#/components/schemas/ClassReadObject'
+
+    ClassUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseClass'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ClassId'
+            lock:
+              $ref: '#/components/schemas/ClassLock'
+
+    ClassUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ClassRequestDebug'
+        - type: object
+          properties:
+            class:
+              $ref: '#/components/schemas/ClassUpdateObject'
+
+    ClassDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ClassId'
+            lock:
+              $ref: '#/components/schemas/ClassLock'
+
+    ClassDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ClassRequestDebug'
+        - type: object
+          properties:
+            class:
+              $ref: '#/components/schemas/ClassDeleteObject'
+
+    ClassSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в классах
+
+    ClassSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ClassRequestDebug'
+        - type: object
+          properties:
+            classFilter:
+              $ref: '#/components/schemas/ClassSearchFilter'
+
+    ClassSignUpObject:
+      $ref: '#/components/schemas/ClassReadObject'
+
+    ClassSignUpRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/ClassRequestDebug'
+        - type: object
+          properties:
+            class:
+              $ref: '#/components/schemas/ClassSignUpObject'
+
+    ClassResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseClass'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/ClassId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/ClassLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/ClassPermissions'
+
+    ClassPermissions:
+      type: string
+      description: Доступы для клиента для операций над классом
+      enum:
+        - read
+        - update
+        - delete
+        - makeVisiblePublic
+        - makeVisibleOwn
+        - makeVisibleGroup
+
+    ClassResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом класса
+          properties:
+            class:
+              $ref: '#/components/schemas/ClassResponseObject'
+
+    ClassResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            classes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassResponseObject'
+
+    ClassCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ClassResponseSingle'
+
+    ClassReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ClassResponseSingle'
+
+    ClassUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ClassResponseSingle'
+
+    ClassDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ClassResponseSingle'
+
+    ClassSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ClassResponseMulti'
+
+    ClassSignUpResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/ClassResponseSingle'
+        - $ref: '#/components/schemas/ClassResponseMulti'
+
+    # STUBS ======================
+    ClassRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    ClassRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/ClassDebug'
+
+    ClassDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/ClassRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/ClassRequestDebugStubs'
+
+    ClassRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badTitle
+        - badDescription
+        - badVisibility
+        - cannotDelete
+        - badSearchString
