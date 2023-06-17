@@ -2,6 +2,8 @@ rootProject.name = "kotlin-marketplace"
 include("les1hw1")
 include("acceptence")
 include("do-yoga-api-v1-jackson")
+include("do-yoga-common")
+include("do-yoga-mappers-v1")
 
 pluginManagement {
     val kotlinVersion: String by settings

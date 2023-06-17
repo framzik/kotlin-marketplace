@@ -17,7 +17,7 @@ class RequestSerializationTest {
         requestType = "create",
         debug = ClassDebug(
             mode = ClassRequestDebugMode.STUB,
-            stub = ClassRequestDebugStubs.BAD_TITLE
+            stub = ClassRequestDebugStubs.BAD_ID
         ),
         propertyClass = ClassCreateObject(
             officeAddress = "Строителей 10",

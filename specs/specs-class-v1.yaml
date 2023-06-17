@@ -452,8 +452,6 @@ components:
         - success
         - notFound
         - badId
-        - badTitle
-        - badDescription
         - badVisibility
         - cannotDelete
         - badSearchString
