@@ -4,6 +4,9 @@ plugins {
 }
 
 allprojects {
+    group = "ru.khrebtov"
+    version = "1.0-SNAPSHOT"
+
     repositories {
         google()
         mavenCentral()
@@ -12,9 +15,6 @@ allprojects {
 }
 
 subprojects {
-    group = "ru.khrebtov"
-    version = "1.0-SNAPSHOT"
-
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
     }
