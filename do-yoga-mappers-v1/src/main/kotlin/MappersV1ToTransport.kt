@@ -8,6 +8,7 @@ import ru.khrebtov.api.v1.models.ClassReadResponse
 import ru.khrebtov.api.v1.models.ClassResponseObject
 import ru.khrebtov.api.v1.models.ClassSearchResponse
 import ru.khrebtov.api.v1.models.ClassSignUpResponse
+import ru.khrebtov.api.v1.models.ClassType
 import ru.khrebtov.api.v1.models.ClassUpdateResponse
 import ru.khrebtov.api.v1.models.ClassVisibility
 import ru.khrebtov.api.v1.models.Error
@@ -20,6 +21,7 @@ import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassPermissionClient
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaError
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaType
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaVisibility
 import ru.otus.otuskotlin.marketplace.mappers.v1.exceptions.UnknownDoYogaCommand
 
@@ -93,8 +95,17 @@ private fun DoYogaClass.toTransportClass(): ClassResponseObject = ClassResponseO
     officeAddress = this.officeAddress,
     trainer = this.trainer,
     students = this.students,
-    time = this.time.toString()
+    time = this.time.toString(),
+    classType = this.classType.toTransportClass()
 )
+
+private fun DoYogaType.toTransportClass(): ClassType? {
+    return when (this) {
+        DoYogaType.GROUP -> ClassType.GROUP
+        DoYogaType.PERSONAL -> ClassType.PERSONAL
+        else -> null
+    }
+}
 
 private fun Set<DoYogaClassPermissionClient>.toTransportClass(): Set<ClassPermissions>? = this
     .map { it.toTransportClass() }

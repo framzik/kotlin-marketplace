@@ -12,6 +12,7 @@ import ru.khrebtov.api.v1.models.ClassRequestDebugStubs
 import ru.khrebtov.api.v1.models.ClassSearchFilter
 import ru.khrebtov.api.v1.models.ClassSearchRequest
 import ru.khrebtov.api.v1.models.ClassSignUpRequest
+import ru.khrebtov.api.v1.models.ClassType
 import ru.khrebtov.api.v1.models.ClassUpdateObject
 import ru.khrebtov.api.v1.models.ClassUpdateRequest
 import ru.khrebtov.api.v1.models.ClassVisibility
@@ -22,6 +23,7 @@ import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassFilter
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaRequestId
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaType
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaVisibility
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaWorkMode
 import ru.otus.otuskotlin.marketplace.common.stubs.DoYogaStubs
@@ -116,7 +118,16 @@ private fun ClassCreateObject.toInternal(): DoYogaClass = DoYogaClass(
     students = this.students,
     time = LocalDateTime.parse(this.time!!),
     visibility = this.visibility.fromTransport(),
+    classType = this.classType.toInternal()
 )
+
+private fun ClassType?.toInternal(): DoYogaType {
+    return when (this) {
+        ClassType.GROUP -> DoYogaType.GROUP
+        ClassType.PERSONAL -> DoYogaType.PERSONAL
+        else -> DoYogaType.NONE
+    }
+}
 
 private fun ClassUpdateObject.toInternal(): DoYogaClass = DoYogaClass(
     id = this.id.toAdId(),

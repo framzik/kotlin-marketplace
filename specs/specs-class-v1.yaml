@@ -235,8 +235,17 @@ components:
           type: string
           format: date-time
           description: Время проведения занятия
+        classType:
+          $ref: '#/components/schemas/ClassType'
         visibility:
           $ref: '#/components/schemas/ClassVisibility'
+
+    ClassType:
+      type: string
+      description: 'Тип класса: личный или групповой'
+      enum:
+        - personal
+        - group
 
     ClassVisibility:
       type: string
