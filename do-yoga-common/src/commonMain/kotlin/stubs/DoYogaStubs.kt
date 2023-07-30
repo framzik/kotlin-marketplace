@@ -8,4 +8,7 @@ enum class DoYogaStubs {
     BAD_VISIBILITY,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
+    BAD_OFFICE_ADDRESS,
+    BAD_TRAINER,
+    DB_ERROR,
 }

@@ -12,4 +12,8 @@ data class DoYogaClass(
     var students: Set<String>? = null,
     var time: LocalDateTime? = null,
     val permissionsClient: MutableSet<DoYogaClassPermissionClient> = mutableSetOf()
-)
+){
+    fun deepCopy(): DoYogaClass = copy(
+        permissionsClient = permissionsClient.toMutableSet(),
+    )
+}

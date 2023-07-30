@@ -119,8 +119,8 @@ class RabbitMqTest {
     private val classCreateV1 = with(DoYogaClassStub.get()) {
         ClassCreateRequest(
             propertyClass = ClassCreateObject(
-                officeAddress = "someAddress",
-                trainer = "Filatov and Ko",
+                officeAddress = officeAddress,
+                trainer = trainer,
                 classType = ClassType.GROUP,
                 time = "2028-07-21T17:32:28"
             ),
