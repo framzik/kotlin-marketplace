@@ -7,6 +7,7 @@ include("do-yoga-mappers-v1")
 include("do-yoga-stubs")
 include("do-yoga-biz")
 include("class-app-spring")
+include("do-yoga-app-rabbit")
 
 pluginManagement {
     val kotlinVersion: String by settings
@@ -15,6 +16,7 @@ pluginManagement {
     val springDependencyManagementVersion: String by settings
     val pluginSpringVersion: String by settings
     val pluginJpa: String by settings
+    val bmuschkoVersion: String by settings
 
     plugins {
         kotlin("jvm") version kotlinVersion apply false
@@ -26,6 +28,10 @@ pluginManagement {
         kotlin("plugin.jpa") version pluginJpa apply false
 
         id("org.openapi.generator") version openapiVersion apply false
+        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+        id("com.bmuschko.docker-spring-boot-application") version bmuschkoVersion apply false
+        id("com.bmuschko.docker-remote-api") version bmuschkoVersion apply false
+
     }
 }
 
