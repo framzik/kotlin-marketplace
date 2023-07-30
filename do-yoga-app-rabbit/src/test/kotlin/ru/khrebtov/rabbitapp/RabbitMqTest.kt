@@ -6,6 +6,7 @@ import com.rabbitmq.client.DeliverCallback
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.testcontainers.containers.RabbitMQContainer
@@ -68,6 +69,7 @@ class RabbitMqTest {
     }
 
     @BeforeTest
+    @DelicateCoroutinesApi
     fun tearUp() {
         println("init controller")
         GlobalScope.launch {

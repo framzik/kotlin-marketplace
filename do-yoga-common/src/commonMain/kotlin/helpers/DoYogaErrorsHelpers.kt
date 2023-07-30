@@ -2,6 +2,7 @@ package ru.otus.otuskotlin.marketplace.common.helpers
 
 import ru.otus.otuskotlin.marketplace.common.DoYogaContext
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaError
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
 
 fun Throwable.asDoYogaError(
     code: String = "unknown",
@@ -16,3 +17,7 @@ fun Throwable.asDoYogaError(
 )
 
 fun DoYogaContext.addError(vararg error: DoYogaError) = errors.addAll(error)
+fun DoYogaContext.fail(error: DoYogaError) {
+    addError(error)
+    state = DoYogaState.FAILING
+}

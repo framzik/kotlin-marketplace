@@ -8,6 +8,7 @@ include("do-yoga-stubs")
 include("do-yoga-biz")
 include("class-app-spring")
 include("do-yoga-app-rabbit")
+include("do-yoga-lib-cor")
 
 pluginManagement {
     val kotlinVersion: String by settings
