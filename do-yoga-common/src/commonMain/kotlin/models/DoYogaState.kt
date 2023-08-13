@@ -4,4 +4,5 @@ enum class DoYogaState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }

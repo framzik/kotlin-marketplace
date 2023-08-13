@@ -3,23 +3,25 @@ plugins {
 }
 
 kotlin {
-    jvm {}
+    js(IR) {
+        browser()
+        nodejs()
+    }
+    jvm {
+
+    }
     macosX64 {}
     linuxX64 {}
+    macosArm64 {}
 
     sourceSets {
         val coroutinesVersion: String by project
-
-        all { languageSettings.optIn("kotlin.RequiresOptIn") }
 
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-
-                implementation(project(":do-yoga-common"))
-                implementation(project(":do-yoga-stubs"))
-                implementation(project(":do-yoga-lib-cor"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
@@ -27,8 +29,19 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+            }
+        }
+        @Suppress("UNUSED_VARIABLE")
+        val jsMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-js"))
+            }
+        }
+        @Suppress("UNUSED_VARIABLE")
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

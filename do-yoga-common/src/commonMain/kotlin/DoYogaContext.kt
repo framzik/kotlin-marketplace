@@ -18,4 +18,10 @@ data class DoYogaContext(
     var classFilterRequest: DoYogaClassFilter = DoYogaClassFilter(),
     var classResponse: DoYogaClass = DoYogaClass(),
     var classesResponse: MutableList<DoYogaClass> = mutableListOf(),
+
+    var classValidating: DoYogaClass = DoYogaClass(),
+    var classFilterValidating: DoYogaClassFilter = DoYogaClassFilter(),
+
+    var classValidated: DoYogaClass = DoYogaClass(),
+    var classFilterValidated: DoYogaClassFilter = DoYogaClassFilter(),
 )
