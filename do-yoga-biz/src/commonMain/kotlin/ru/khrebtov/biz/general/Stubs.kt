@@ -1,4 +1,4 @@
-package ru.khrebtov.biz.groups
+package ru.khrebtov.biz.general
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.chain

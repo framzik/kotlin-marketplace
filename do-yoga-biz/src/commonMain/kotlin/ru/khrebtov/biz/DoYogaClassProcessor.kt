@@ -1,7 +1,9 @@
 package ru.khrebtov.biz
 
-import ru.khrebtov.biz.groups.operation
-import ru.khrebtov.biz.groups.stubs
+import ru.khrebtov.biz.general.initRepo
+import ru.khrebtov.biz.general.operation
+import ru.khrebtov.biz.general.prepareResult
+import ru.khrebtov.biz.general.stubs
 import ru.khrebtov.biz.validation.finishClassFilterValidation
 import ru.khrebtov.biz.validation.finishClassValidation
 import ru.khrebtov.biz.validation.validateIdNotEmpty
@@ -25,17 +27,30 @@ import ru.khrebtov.biz.workers.stubValidationBadOfficeAddress
 import ru.khrebtov.biz.workers.stubValidationBadTrainer
 import ru.khrebtov.cor.rootChain
 import ru.khrebtov.cor.worker
+import ru.khrebtov.biz.repo.repoCreate
+import ru.khrebtov.biz.repo.repoDelete
+import ru.khrebtov.biz.repo.repoSignUp
+import ru.khrebtov.biz.repo.repoPrepareCreate
+import ru.khrebtov.biz.repo.repoPrepareDelete
+import ru.khrebtov.biz.repo.repoPrepareSigUp
+import ru.khrebtov.biz.repo.repoPrepareUpdate
+import ru.khrebtov.biz.repo.repoRead
+import ru.khrebtov.biz.repo.repoSearch
+import ru.khrebtov.biz.repo.repoUpdate
+import ru.khrebtov.cor.chain
 import ru.otus.otuskotlin.marketplace.common.DoYogaContext
+import ru.otus.otuskotlin.marketplace.common.DoYogaCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
 
-class DoYogaClassProcessor {
-    suspend fun exec(ctx: DoYogaContext) = BusinessChain.exec(ctx)
+class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()) {
+    suspend fun exec(ctx: DoYogaContext) = BusinessChain.exec(ctx.apply { this.settings = this@DoYogaClassProcessor.settings })
 
     companion object {
         private val BusinessChain = rootChain<DoYogaContext> {
             initStatus("Инициализация статуса")
-
+            initRepo("Инициализация репозитория")
             operation("Создание класса", DoYogaCommand.CREATE) {
                 stubs("Обработка стабов") {
                     stubCreateSuccess("Имитация успешной обработки")
@@ -56,6 +71,12 @@ class DoYogaClassProcessor {
 
                     finishClassValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка объекта для сохранения")
+                    repoCreate("Создание класса в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Получить класс", DoYogaCommand.READ) {
                 stubs("Обработка стабов") {
@@ -72,6 +93,16 @@ class DoYogaClassProcessor {
 
                     finishClassValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение класса из БД")
+                    worker {
+                        title = "Подготовка ответа для Read"
+                        on { state == DoYogaState.RUNNING }
+                        handle { classRepoDone = classRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Изменить класс", DoYogaCommand.UPDATE) {
                 stubs("Обработка стабов") {
@@ -95,6 +126,13 @@ class DoYogaClassProcessor {
                     validateTrainerHasContent("Проверка символов")
 
                     finishClassValidation("Успешное завершение процедуры валидации")
+                    chain {
+                        title = "Логика сохранения"
+                        repoRead("Чтение класса из БД")
+                        repoPrepareUpdate("Подготовка объекта для обновления")
+                        repoUpdate("Обновление класса в БД")
+                    }
+                    prepareResult("Подготовка ответа")
                 }
             }
             operation("Удалить класс", DoYogaCommand.DELETE) {
@@ -112,6 +150,13 @@ class DoYogaClassProcessor {
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
                     finishClassValidation("Успешное завершение процедуры валидации")
+                    chain {
+                        title = "Логика удаления"
+                        repoRead("Чтение объявления из БД")
+                        repoPrepareDelete("Подготовка объекта для удаления")
+                        repoDelete("Удаление класса из БД")
+                    }
+                    prepareResult("Подготовка ответа")
                 }
             }
             operation("Поиск объявлений", DoYogaCommand.SEARCH) {
@@ -127,6 +172,8 @@ class DoYogaClassProcessor {
                     }
 
                     finishClassFilterValidation("Успешное завершение процедуры валидации")
+                    repoSearch("Поиск объявления в БД по фильтру")
+                    prepareResult("Подготовка ответа")
                 }
 
             }
@@ -145,6 +192,13 @@ class DoYogaClassProcessor {
 
                     finishClassValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика поиска в БД"
+                    repoRead("Чтение класса из БД")
+                    repoPrepareSigUp("Подготовка данных для поиска предложений")
+                    repoSignUp("Поиск предложений для класса в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
         }.build()
     }

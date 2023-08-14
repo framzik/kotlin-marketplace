@@ -34,6 +34,7 @@ dependencies {
 
     // biz
     implementation(project(":do-yoga-biz"))
+    implementation(project(":do-yoga-repo-in-memory"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
