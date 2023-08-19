@@ -6,5 +6,6 @@ import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
 class ClassRepoInMemoryUpdateTest : RepoClassUpdateTest() {
     override val repo: IClassRepository = ClassRepoInMemory(
         initObjects = initObjects,
+        randomUuid = { lockNew.asString() }
     )
 }

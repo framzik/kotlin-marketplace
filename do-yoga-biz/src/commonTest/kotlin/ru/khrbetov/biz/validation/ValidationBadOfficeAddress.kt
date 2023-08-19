@@ -24,6 +24,7 @@ fun validationOfficeAddressCorrect(command: DoYogaCommand, processor: DoYogaClas
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -44,6 +45,7 @@ fun validationOfficeAddressTrim(command: DoYogaCommand, processor: DoYogaClassPr
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -64,6 +66,7 @@ fun validationOfficeAddressEmpty(command: DoYogaCommand, processor: DoYogaClassP
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -86,6 +89,7 @@ fun validationOfficeAddressSymbols(command: DoYogaCommand, processor: DoYogaClas
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

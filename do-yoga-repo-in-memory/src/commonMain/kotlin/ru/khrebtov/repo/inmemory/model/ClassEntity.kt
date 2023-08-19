@@ -8,6 +8,7 @@ data class ClassEntity(
     val trainer: String? = null,
     val classType: String? = null,
     val visibility: String? = null,
+    val lock: String? = null,
 ) {
     constructor(model: DoYogaClass): this(
         id = model.id.asString().takeIf { it.isNotBlank() },
@@ -15,6 +16,7 @@ data class ClassEntity(
         trainer = model.trainer.takeIf { it?.isNotBlank()?: false },
         classType = model.classType.takeIf { it != DoYogaType.NONE }?.name,
         visibility = model.visibility.takeIf { it != DoYogaVisibility.NONE }?.name,
+        lock = model.lock.asString().takeIf { it.isNotBlank() }
     )
 
     fun toInternal() = DoYogaClass(
@@ -23,5 +25,6 @@ data class ClassEntity(
         trainer = trainer?: "",
         classType = classType?.let { DoYogaType.valueOf(it) }?: DoYogaType.NONE,
         visibility = visibility?.let { DoYogaVisibility.valueOf(it) }?: DoYogaVisibility.NONE,
+        lock = lock?.let { DoYogaClassLock(it) } ?: DoYogaClassLock.NONE,
     )
 }

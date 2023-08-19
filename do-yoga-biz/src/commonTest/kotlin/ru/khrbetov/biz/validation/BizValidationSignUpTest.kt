@@ -10,13 +10,8 @@ import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationSignUpTest {
 
-    private val command = DoYogaCommand.DELETE
-    private val settings by lazy {
-        DoYogaCorSettings(
-            repoTest = ClassRepoStub()
-        )
-    }
-    private val processor by lazy { DoYogaClassProcessor(settings) }
+    private val command = DoYogaCommand.SIGN_UP
+    private val processor = DoYogaClassProcessor(DoYogaCorSettings(repoTest = ClassRepoStub()))
 
     @Test
     fun correctId() = validationIdCorrect(command, processor)

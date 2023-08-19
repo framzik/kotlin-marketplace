@@ -22,6 +22,7 @@ class BizRepoDeleteTest {
         trainer = "abc",
         classType = DoYogaType.PERSONAL,
         visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+        lock = DoYogaClassLock("123-234-abc-ABC"),
     )
     private val repo by lazy {
         ClassRepositoryMock(
@@ -52,6 +53,7 @@ class BizRepoDeleteTest {
     fun repoDeleteSuccessTest() = runTest {
         val classToUpdate = DoYogaClass(
             id = DoYogaClassId("123"),
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         )
         val ctx = DoYogaContext(
             command = command,

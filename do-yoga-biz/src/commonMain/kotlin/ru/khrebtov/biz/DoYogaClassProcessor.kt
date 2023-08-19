@@ -37,10 +37,13 @@ import ru.khrebtov.biz.repo.repoPrepareUpdate
 import ru.khrebtov.biz.repo.repoRead
 import ru.khrebtov.biz.repo.repoSearch
 import ru.khrebtov.biz.repo.repoUpdate
+import ru.khrebtov.biz.validation.validateLockNotEmpty
+import ru.khrebtov.biz.validation.validateLockProperFormat
 import ru.khrebtov.cor.chain
 import ru.otus.otuskotlin.marketplace.common.DoYogaContext
 import ru.otus.otuskotlin.marketplace.common.DoYogaCorSettings
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
 
@@ -116,10 +119,13 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                 validation {
                     worker("Копируем поля в classValidating") { classValidating = classRequest.deepCopy() }
                     worker("Очистка id") { classValidating.id = DoYogaClassId(classValidating.id.asString().trim()) }
+                    worker("Очистка lock") { classValidating.lock = DoYogaClassLock(classValidating.lock.asString().trim()) }
                     worker("Очистка адреса") { classValidating.officeAddress = classValidating.officeAddress?.trim() }
                     worker("Очистка тренера") { classValidating.trainer = classValidating.trainer?.trim() }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateOfficeAddressNotEmpty("Проверка, что адрес не пуст")
                     validateOfficeAddressHasContent("Проверка символов")
                     validateTrainerNotEmpty("Проверка, что тренер не пуст")
@@ -147,8 +153,11 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                         classValidating = classRequest.deepCopy()
                     }
                     worker("Очистка id") { classValidating.id = DoYogaClassId(classValidating.id.asString().trim()) }
+                    worker("Очистка lock") { classValidating.lock = DoYogaClassLock(classValidating.lock.asString().trim()) }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     finishClassValidation("Успешное завершение процедуры валидации")
                     chain {
                         title = "Логика удаления"

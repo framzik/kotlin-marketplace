@@ -5,5 +5,6 @@ import ru.otus.otuskotlin.marketplace.backend.repo.tests.RepoClassCreateTest
 class ClassRepoInMemoryCreateTest : RepoClassCreateTest() {
     override val repo = ClassRepoInMemory(
         initObjects = initObjects,
+        randomUuid = { lockNew.asString() }
     )
 }

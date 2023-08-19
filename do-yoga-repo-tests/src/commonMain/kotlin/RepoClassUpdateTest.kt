@@ -13,6 +13,9 @@ abstract class RepoClassUpdateTest {
     abstract val repo: IClassRepository
     protected open val updateSucc = initObjects[0]
     private val updateIdNotFound = DoYogaClassId("ad-repo-update-not-found")
+    protected open val updateConc = initObjects[1]
+    protected val lockBad = DoYogaClassLock("20000000-0000-0000-0000-000000000009")
+    protected val lockNew = DoYogaClassLock("20000000-0000-0000-0000-000000000002")
 
     private val reqUpdateSucc by lazy {
         DoYogaClass(
@@ -21,6 +24,7 @@ abstract class RepoClassUpdateTest {
             trainer = "Shwarch",
             visibility = DoYogaVisibility.VISIBLE_TO_GROUP,
             classType = DoYogaType.GROUP,
+            lock = initObjects.first().lock,
         )
     }
     private val reqUpdateNotFound = DoYogaClass(
@@ -29,7 +33,18 @@ abstract class RepoClassUpdateTest {
         trainer = "Shwarch",
         visibility = DoYogaVisibility.VISIBLE_TO_GROUP,
         classType = DoYogaType.GROUP,
+        lock = initObjects.first().lock,
     )
+    private val reqUpdateConc by lazy {
+        DoYogaClass(
+            id = updateConc.id,
+            officeAddress = "Spot 18",
+            trainer = "Shwarch",
+            visibility = DoYogaVisibility.VISIBLE_TO_GROUP,
+            classType = DoYogaType.GROUP,
+            lock = lockBad,
+        )
+    }
 
     @Test
     fun updateSuccess() = runRepoTest {
@@ -40,6 +55,7 @@ abstract class RepoClassUpdateTest {
         assertEquals(reqUpdateSucc.trainer, result.data?.trainer)
         assertEquals(reqUpdateSucc.classType, result.data?.classType)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     @Test
@@ -50,7 +66,14 @@ abstract class RepoClassUpdateTest {
         val error = result.errors.find { it.code == "not-found" }
         assertEquals("id", error?.field)
     }
-
+    @Test
+    fun updateConcurrencyError() = runRepoTest {
+        val result = repo.updateClass(DbClassRequest(reqUpdateConc))
+        assertEquals(false, result.isSuccess)
+        val error = result.errors.find { it.code == "concurrency" }
+        assertEquals("lock", error?.field)
+        assertEquals(updateConc, result.data)
+    }
     companion object : BaseInitClasses("update") {
         override val initObjects: List<DoYogaClass> = listOf(
             createInitTestModel("update"),

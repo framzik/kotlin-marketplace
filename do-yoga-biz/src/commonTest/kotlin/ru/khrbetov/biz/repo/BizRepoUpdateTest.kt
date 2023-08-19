@@ -57,6 +57,7 @@ class BizRepoUpdateTest {
             trainer = "xyz",
             classType = DoYogaType.GROUP,
             visibility = DoYogaVisibility.VISIBLE_TO_GROUP,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         )
         val ctx = DoYogaContext(
             command = command,

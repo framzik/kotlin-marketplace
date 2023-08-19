@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.runTest
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.otus.otuskotlin.marketplace.common.DoYogaContext
 import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.otus.otuskotlin.marketplace.stubs.DoYogaClassStub
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun validationIdCorrect(command: DoYogaCommand, processor: DoYogaClassProcessor) = runTest {
@@ -15,13 +16,9 @@ fun validationIdCorrect(command: DoYogaCommand, processor: DoYogaClassProcessor)
         command = command,
         state = DoYogaState.NONE,
         workMode = DoYogaWorkMode.TEST,
-        classRequest = DoYogaClass(
-            id = DoYogaClassId("123-234-abc-ABC"),
-            officeAddress = "officeAddress",
-            trainer = "trainer",
-            classType = DoYogaType.PERSONAL,
-            visibility = DoYogaVisibility.VISIBLE_PUBLIC,
-        ),
+        classRequest = DoYogaClassStub.prepareResult {
+            lock = DoYogaClassLock("123-234-abc-ABC")
+        },
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -30,6 +27,8 @@ fun validationIdCorrect(command: DoYogaCommand, processor: DoYogaClassProcessor)
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun validationIdTrim(command: DoYogaCommand, processor: DoYogaClassProcessor) = runTest {
+    val adRequest = DoYogaClassStub.get()
+    adRequest.id = DoYogaClassId(" \n\t 666 \n\t ")
     val ctx = DoYogaContext(
         command = command,
         state = DoYogaState.NONE,
@@ -40,6 +39,7 @@ fun validationIdTrim(command: DoYogaCommand, processor: DoYogaClassProcessor) = 
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -49,6 +49,8 @@ fun validationIdTrim(command: DoYogaCommand, processor: DoYogaClassProcessor) = 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun validationIdEmpty(command: DoYogaCommand, processor: DoYogaClassProcessor) = runTest {
+    val adRequest = DoYogaClassStub.get()
+    adRequest.id = DoYogaClassId("")
     val ctx = DoYogaContext(
         command = command,
         state = DoYogaState.NONE,
@@ -59,6 +61,7 @@ fun validationIdEmpty(command: DoYogaCommand, processor: DoYogaClassProcessor) =
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -71,6 +74,8 @@ fun validationIdEmpty(command: DoYogaCommand, processor: DoYogaClassProcessor) =
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun validationIdFormat(command: DoYogaCommand, processor: DoYogaClassProcessor) = runTest {
+    val adRequest = DoYogaClassStub.get()
+    adRequest.id = DoYogaClassId("!@#\$%^&*(),.{}")
     val ctx = DoYogaContext(
         command = command,
         state = DoYogaState.NONE,
@@ -81,6 +86,7 @@ fun validationIdFormat(command: DoYogaCommand, processor: DoYogaClassProcessor) 
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

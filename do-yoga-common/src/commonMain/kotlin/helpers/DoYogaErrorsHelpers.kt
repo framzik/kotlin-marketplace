@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.marketplace.common.helpers
 
 import ru.otus.otuskotlin.marketplace.common.DoYogaContext
+import ru.otus.otuskotlin.marketplace.common.exceptions.RepoConcurrencyException
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaError
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
 
@@ -47,6 +49,7 @@ fun errorAdministration(
     field: String = "",
     violationCode: String,
     description: String,
+    exception: Exception? = null,
     level: DoYogaError.Level = DoYogaError.Level.ERROR,
 ) = DoYogaError(
     field = field,
@@ -54,4 +57,17 @@ fun errorAdministration(
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+    exception = exception,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: DoYogaClassLock,
+    actualLock: DoYogaClassLock?,
+    exception: Exception? = null,
+) = DoYogaError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

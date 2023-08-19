@@ -11,12 +11,7 @@ import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 class BizValidationReadTest {
 
     private val command = DoYogaCommand.READ
-    private val settings by lazy {
-        DoYogaCorSettings(
-            repoTest = ClassRepoStub()
-        )
-    }
-    private val processor by lazy { DoYogaClassProcessor(settings) }
+    private val processor = DoYogaClassProcessor(DoYogaCorSettings(repoTest = ClassRepoStub()))
 
     @Test fun correctId() = validationIdCorrect(command, processor)
     @Test fun trimId() = validationIdTrim(command, processor)

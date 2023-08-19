@@ -12,6 +12,7 @@ import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoClassCreateTest {
     abstract val repo: IClassRepository
+    protected open val lockNew: DoYogaClassLock = DoYogaClassLock("20000000-0000-0000-0000-000000000002")
 
     private val createObj = DoYogaClass(
         officeAddress = "Spot 18",
@@ -30,6 +31,7 @@ abstract class RepoClassCreateTest {
         assertEquals(expected.classType, result.data?.classType)
         assertNotEquals(DoYogaClassId.NONE, result.data?.id)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     companion object : BaseInitClasses("create") {

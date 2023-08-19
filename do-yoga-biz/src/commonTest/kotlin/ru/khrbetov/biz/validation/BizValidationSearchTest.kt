@@ -15,12 +15,7 @@ import ru.otus.otuskotlin.marketplace.common.models.*
 class BizValidationSearchTest {
 
     private val command = DoYogaCommand.SEARCH
-    private val settings by lazy {
-        DoYogaCorSettings(
-            repoTest = ClassRepoStub()
-        )
-    }
-    private val processor by lazy { DoYogaClassProcessor(settings) }
+    private val processor = DoYogaClassProcessor(DoYogaCorSettings(repoTest = ClassRepoStub()))
 
     @Test
     fun correctEmpty() = runTest {

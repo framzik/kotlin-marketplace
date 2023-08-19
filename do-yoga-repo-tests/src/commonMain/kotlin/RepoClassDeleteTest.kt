@@ -13,18 +13,22 @@ import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
 abstract class RepoClassDeleteTest {
     abstract val repo: IClassRepository
     protected open val deleteSucc = initObjects[0]
+    protected open val deleteConc = initObjects[1]
+    protected open val notFoundId = DoYogaClassId("ad-repo-delete-notFound")
 
     @Test
     fun deleteSuccess() = runRepoTest {
-        val result = repo.deleteClass(DbClassIdRequest(deleteSucc.id))
+        val result = repo.deleteClass(DbClassIdRequest(deleteSucc.id, lock = lockOld))
+        val lockOld = deleteSucc.lock
 
         assertEquals(true, result.isSuccess)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockOld, result.data?.lock)
     }
 
     @Test
     fun deleteNotFound() = runRepoTest {
-        val result = repo.readClass(DbClassIdRequest(notFoundId))
+        val result = repo.readClass(DbClassIdRequest(notFoundId, lock = lockOld))
 
         assertEquals(false, result.isSuccess)
         assertEquals(null, result.data)
@@ -32,11 +36,21 @@ abstract class RepoClassDeleteTest {
         assertEquals("id", error?.field)
     }
 
+    @Test
+    fun deleteConcurrency() = runRepoTest {
+        val lockOld = deleteSucc.lock
+        val result = repo.deleteClass(DbClassIdRequest(deleteConc.id, lock = lockBad))
+
+        assertEquals(false, result.isSuccess)
+        val error = result.errors.find { it.code == "concurrency" }
+        assertEquals("lock", error?.field)
+        assertEquals(lockOld, result.data?.lock)
+    }
+
     companion object : BaseInitClasses("delete") {
         override val initObjects: List<DoYogaClass> = listOf(
             createInitTestModel("delete"),
             createInitTestModel("deleteLock"),
         )
-        val notFoundId = DoYogaClassId("ad-repo-delete-notFound")
     }
 }

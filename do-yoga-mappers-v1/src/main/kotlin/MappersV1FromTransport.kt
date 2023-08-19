@@ -5,7 +5,9 @@ import kotlinx.datetime.LocalDateTime
 import ru.khrebtov.api.v1.models.ClassCreateObject
 import ru.khrebtov.api.v1.models.ClassCreateRequest
 import ru.khrebtov.api.v1.models.ClassDebug
+import ru.khrebtov.api.v1.models.ClassDeleteObject
 import ru.khrebtov.api.v1.models.ClassDeleteRequest
+import ru.khrebtov.api.v1.models.ClassReadObject
 import ru.khrebtov.api.v1.models.ClassReadRequest
 import ru.khrebtov.api.v1.models.ClassRequestDebugMode
 import ru.khrebtov.api.v1.models.ClassRequestDebugStubs
@@ -21,6 +23,7 @@ import ru.otus.otuskotlin.marketplace.common.DoYogaContext
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClass
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassFilter
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaRequestId
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaType
@@ -39,8 +42,10 @@ fun DoYogaContext.fromTransport(request: IRequest) = when (request) {
     else -> throw UnknownRequestClass(request.javaClass)
 }
 
-private fun String?.toAdId() = this?.let { DoYogaClassId(it) } ?: DoYogaClassId.NONE
-private fun String?.toAdWithId() = DoYogaClass(id = this.toAdId())
+private fun String?.toClassId() = this?.let { DoYogaClassId(it) } ?: DoYogaClassId.NONE
+private fun String?.toClassWithId() = DoYogaClass(id = this.toClassId())
+private fun String?.toClassLock() = this?.let { DoYogaClassLock(it) } ?: DoYogaClassLock.NONE
+
 private fun IRequest?.requestId() = this?.requestId?.let { DoYogaRequestId(it) } ?: DoYogaRequestId.NONE
 
 private fun ClassDebug?.transportToWorkMode(): DoYogaWorkMode = when (this?.mode) {
@@ -71,9 +76,15 @@ fun DoYogaContext.fromTransport(request: ClassCreateRequest) {
 fun DoYogaContext.fromTransport(request: ClassReadRequest) {
     command = DoYogaCommand.READ
     requestId = request.requestId()
-    classRequest = request.propertyClass?.id.toAdWithId()
+    classRequest = request.propertyClass.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
+}
+
+private fun ClassReadObject?.toInternal(): DoYogaClass = if (this != null) {
+    DoYogaClass(id = id.toClassId())
+} else {
+    DoYogaClass.NONE
 }
 
 fun DoYogaContext.fromTransport(request: ClassUpdateRequest) {
@@ -87,9 +98,18 @@ fun DoYogaContext.fromTransport(request: ClassUpdateRequest) {
 fun DoYogaContext.fromTransport(request: ClassDeleteRequest) {
     command = DoYogaCommand.DELETE
     requestId = request.requestId()
-    classRequest = request.propertyClass?.id.toAdWithId()
+    classRequest = request.propertyClass.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
+}
+
+private fun ClassDeleteObject?.toInternal(): DoYogaClass = if (this != null) {
+    DoYogaClass(
+        id = id.toClassId(),
+        lock = lock.toClassLock(),
+    )
+} else {
+    DoYogaClass.NONE
 }
 
 fun DoYogaContext.fromTransport(request: ClassSearchRequest) {
@@ -103,7 +123,7 @@ fun DoYogaContext.fromTransport(request: ClassSearchRequest) {
 fun DoYogaContext.fromTransport(request: ClassSignUpRequest) {
     command = DoYogaCommand.SIGN_UP
     requestId = request.requestId()
-    classRequest = request.propertyClass?.id.toAdWithId()
+    classRequest = request.propertyClass?.id.toClassWithId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -130,12 +150,13 @@ private fun ClassType?.toInternal(): DoYogaType {
 }
 
 private fun ClassUpdateObject.toInternal(): DoYogaClass = DoYogaClass(
-    id = this.id.toAdId(),
+    id = this.id.toClassId(),
     officeAddress = this.officeAddress,
     trainer = this.trainer,
     students = this.students,
     time = LocalDateTime.parse(this.time!!),
     visibility = this.visibility.fromTransport(),
+    lock = lock.toClassLock(),
 )
 
 private fun ClassVisibility?.fromTransport(): DoYogaVisibility = when (this) {

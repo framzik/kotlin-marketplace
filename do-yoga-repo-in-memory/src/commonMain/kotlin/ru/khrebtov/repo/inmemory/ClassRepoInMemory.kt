@@ -5,9 +5,12 @@ import io.github.reactivecircus.cache4k.Cache
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.khrebtov.repo.inmemory.model.ClassEntity
+import ru.otus.otuskotlin.marketplace.common.helpers.errorRepoConcurrency
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClass
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaError
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaType
 import ru.otus.otuskotlin.marketplace.common.repo.DbClassFilterRequest
@@ -26,6 +29,7 @@ class ClassRepoInMemory(
     private val cache = Cache.Builder<String, ClassEntity>()
         .expireAfterWrite(ttl)
         .build()
+    private val mutex: Mutex = Mutex()
 
     init {
         initObjects.forEach {
@@ -43,11 +47,11 @@ class ClassRepoInMemory(
 
     override suspend fun createClass(rq: DbClassRequest): DbClassResponse {
         val key = randomUuid()
-        val ad = rq.doYogaClass.copy(id = DoYogaClassId(key))
-        val entity = ClassEntity(ad)
+        val yogaClass = rq.doYogaClass.copy(id = DoYogaClassId(key), lock = DoYogaClassLock(randomUuid()))
+        val entity = ClassEntity(yogaClass)
         cache.put(key, entity)
         return DbClassResponse(
-            data = ad,
+            data = yogaClass,
             isSuccess = true,
         )
     }
@@ -65,30 +69,61 @@ class ClassRepoInMemory(
 
     override suspend fun updateClass(rq: DbClassRequest): DbClassResponse {
         val key = rq.doYogaClass.id.takeIf { it != DoYogaClassId.NONE }?.asString() ?: return resultErrorEmptyId
-        val newClass = rq.doYogaClass.copy()
+        val oldLock =
+            rq.doYogaClass.lock.takeIf { it != DoYogaClassLock.NONE }?.asString() ?: return resultErrorEmptyLock
+        val newClass = rq.doYogaClass.copy(lock = DoYogaClassLock(randomUuid()))
         val entity = ClassEntity(newClass)
-        return when (cache.get(key)) {
-            null -> resultErrorNotFound
-            else -> {
-                cache.put(key, entity)
-                DbClassResponse(
-                    data = newClass,
-                    isSuccess = true,
+        return mutex.withLock {
+            val oldClass = cache.get(key)
+            when {
+                oldClass == null -> resultErrorNotFound
+                oldClass.lock != oldLock -> DbClassResponse(
+                    data = oldClass.toInternal(),
+                    isSuccess = false,
+                    errors = listOf(
+                        errorRepoConcurrency(
+                            DoYogaClassLock(oldLock),
+                            oldClass.lock?.let { DoYogaClassLock(it) })
+                    )
                 )
+
+                else -> {
+                    cache.put(key, entity)
+                    DbClassResponse(
+                        data = newClass,
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
 
     override suspend fun deleteClass(rq: DbClassIdRequest): DbClassResponse {
         val key = rq.id.takeIf { it != DoYogaClassId.NONE }?.asString() ?: return resultErrorEmptyId
-        return when (val oldClass = cache.get(key)) {
-            null -> resultErrorNotFound
-            else -> {
-                cache.invalidate(key)
-                DbClassResponse(
+        val oldLock =
+            rq.lock.takeIf { it != DoYogaClassLock.NONE }?.asString() ?: return resultErrorEmptyLock
+
+        return mutex.withLock {
+            val oldClass = cache.get(key)
+            when {
+                oldClass == null -> resultErrorNotFound
+                oldClass.lock != oldLock -> DbClassResponse(
                     data = oldClass.toInternal(),
-                    isSuccess = true,
+                    isSuccess = false,
+                    errors = listOf(
+                        errorRepoConcurrency(
+                            DoYogaClassLock(oldLock),
+                            oldClass.lock?.let { DoYogaClassLock(it) })
+                    )
                 )
+
+                else -> {
+                    cache.invalidate(key)
+                    DbClassResponse(
+                        data = oldClass.toInternal(),
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
@@ -135,7 +170,18 @@ class ClassRepoInMemory(
                 )
             )
         )
-
+        val resultErrorEmptyLock = DbClassResponse(
+            data = null,
+            isSuccess = false,
+            errors = listOf(
+                DoYogaError(
+                    code = "lock-empty",
+                    group = "validation",
+                    field = "lock",
+                    message = "Lock must not be null or blank"
+                )
+            )
+        )
         val resultErrorNotFound = DbClassResponse(
             isSuccess = false,
             data = null,

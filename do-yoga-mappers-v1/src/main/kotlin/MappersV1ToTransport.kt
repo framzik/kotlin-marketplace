@@ -17,6 +17,7 @@ import ru.khrebtov.api.v1.models.ResponseResult
 import ru.otus.otuskotlin.marketplace.common.DoYogaContext
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClass
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
+import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassPermissionClient
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 import ru.otus.otuskotlin.marketplace.common.models.DoYogaError
@@ -96,7 +97,8 @@ private fun DoYogaClass.toTransportClass(): ClassResponseObject = ClassResponseO
     trainer = this.trainer,
     students = this.students,
     time = this.time.toString(),
-    classType = this.classType.toTransportClass()
+    classType = this.classType.toTransportClass(),
+    lock = lock.takeIf { it != DoYogaClassLock.NONE }?.asString(),
 )
 
 private fun DoYogaType.toTransportClass(): ClassType? {

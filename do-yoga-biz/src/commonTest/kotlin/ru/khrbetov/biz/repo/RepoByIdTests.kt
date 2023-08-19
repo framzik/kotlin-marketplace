@@ -50,6 +50,7 @@ fun repoNotFoundTest(command: DoYogaCommand) = runTest {
             trainer = "xyz",
             classType = DoYogaType.GROUP,
             visibility = DoYogaVisibility.VISIBLE_TO_GROUP,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

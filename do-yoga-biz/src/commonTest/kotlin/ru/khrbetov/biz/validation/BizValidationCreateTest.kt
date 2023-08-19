@@ -11,12 +11,7 @@ import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
 class BizValidationCreateTest {
 
     private val command = DoYogaCommand.CREATE
-    private val settings by lazy {
-        DoYogaCorSettings(
-            repoTest = ClassRepoStub()
-        )
-    }
-    private val processor by lazy { DoYogaClassProcessor(settings) }
+    private val processor = DoYogaClassProcessor(DoYogaCorSettings(repoTest = ClassRepoStub()))
 
 
     @Test
