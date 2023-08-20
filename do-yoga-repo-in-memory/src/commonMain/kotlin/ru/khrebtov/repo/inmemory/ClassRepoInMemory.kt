@@ -7,18 +7,18 @@ import kotlin.time.Duration.Companion.minutes
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import ru.khrebtov.repo.inmemory.model.ClassEntity
-import ru.otus.otuskotlin.marketplace.common.helpers.errorRepoConcurrency
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaClass
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaError
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaType
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassFilterRequest
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassIdRequest
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassRequest
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassResponse
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassesResponse
-import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
+import ru.khrebtov.do_yoga.common.helpers.errorRepoConcurrency
+import ru.khrebtov.do_yoga.common.models.DoYogaClass
+import ru.khrebtov.do_yoga.common.models.DoYogaClassId
+import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
+import ru.khrebtov.do_yoga.common.models.DoYogaError
+import ru.khrebtov.do_yoga.common.models.DoYogaType
+import ru.khrebtov.do_yoga.common.repo.DbClassFilterRequest
+import ru.khrebtov.do_yoga.common.repo.DbClassIdRequest
+import ru.khrebtov.do_yoga.common.repo.DbClassRequest
+import ru.khrebtov.do_yoga.common.repo.DbClassResponse
+import ru.khrebtov.do_yoga.common.repo.DbClassesResponse
+import ru.khrebtov.do_yoga.common.repo.IClassRepository
 
 class ClassRepoInMemory(
     initObjects: List<DoYogaClass> = emptyList(),

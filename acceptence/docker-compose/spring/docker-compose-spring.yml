@@ -1,0 +1,33 @@
+# Конфигурация для spring + (в перспективе) postgresql
+
+version: '3'
+services:
+  psql:
+    image: postgres:14.1-alpine
+    ports:
+      - "54321:5432"
+    expose:
+      - "54321"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: easy_yoga
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  app-spring:
+    image: class-app-spring:1.0-SNAPSHOT
+    ports:
+      - "8080:8080"
+    environment:
+      PROD_REPOSITORY: sql
+      SQL_URL: jdbc:postgresql://localhost:54321/easy_yoga_db
+      SQL_USER: postgres
+      SQL_PASSWORD: postgres
+    depends_on:
+      psql:
+        condition: service_healthy

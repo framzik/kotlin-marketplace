@@ -12,8 +12,13 @@ import ru.khrebtov.api.v1.models.ClassSearchResponse
 import ru.khrebtov.api.v1.models.ClassUpdateRequest
 import ru.khrebtov.api.v1.models.ClassUpdateResponse
 import ru.khrebtov.springapp.service.DoYogaClassBlockingProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.mappers.v1.*
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.fromTransport
+import ru.khrebtov.do_yoga.toTransportCreate
+import ru.khrebtov.do_yoga.toTransportDelete
+import ru.khrebtov.do_yoga.toTransportRead
+import ru.khrebtov.do_yoga.toTransportSearch
+import ru.khrebtov.do_yoga.toTransportUpdate
 
 @RestController
 @RequestMapping("v1/class")

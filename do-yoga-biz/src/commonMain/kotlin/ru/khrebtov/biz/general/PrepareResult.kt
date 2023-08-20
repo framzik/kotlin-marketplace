@@ -2,9 +2,9 @@ package ru.khrebtov.biz.general
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.worker
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
 
 fun ICorChainDsl<DoYogaContext>.prepareResult(title: String) = worker {
     this.title = title

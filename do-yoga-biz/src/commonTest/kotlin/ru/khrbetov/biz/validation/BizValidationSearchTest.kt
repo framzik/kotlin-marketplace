@@ -7,9 +7,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.khrebtov.backend.repository.inmemory.ClassRepoStub
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.DoYogaCorSettings
-import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.khrebtov.do_yoga.common.models.DoYogaClassFilter
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.DoYogaCorSettings
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationSearchTest {

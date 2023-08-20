@@ -1,6 +1,6 @@
 package ru.khrebtov.repo.inmemory
 
-import ru.otus.otuskotlin.marketplace.backend.repo.tests.RepoClassCreateTest
+import ru.khrebtov.do_yoga.RepoClassCreateTest
 
 class ClassRepoInMemoryCreateTest : RepoClassCreateTest() {
     override val repo = ClassRepoInMemory(

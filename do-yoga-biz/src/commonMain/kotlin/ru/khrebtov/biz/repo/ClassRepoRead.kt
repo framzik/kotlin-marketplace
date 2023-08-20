@@ -2,9 +2,9 @@ package ru.khrebtov.biz.repo
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.worker
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassIdRequest
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.repo.DbClassIdRequest
 
 fun ICorChainDsl<DoYogaContext>.repoRead(title: String) = worker {
     this.title = title

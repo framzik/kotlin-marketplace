@@ -40,12 +40,12 @@ import ru.khrebtov.biz.repo.repoUpdate
 import ru.khrebtov.biz.validation.validateLockNotEmpty
 import ru.khrebtov.biz.validation.validateLockProperFormat
 import ru.khrebtov.cor.chain
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.DoYogaCorSettings
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassId
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.DoYogaCorSettings
+import ru.khrebtov.do_yoga.common.models.DoYogaClassId
+import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
 
 class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()) {
     suspend fun exec(ctx: DoYogaContext) = BusinessChain.exec(ctx.apply { this.settings = this@DoYogaClassProcessor.settings })

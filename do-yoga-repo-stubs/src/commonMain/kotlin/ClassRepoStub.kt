@@ -1,13 +1,13 @@
 package ru.khrebtov.backend.repository.inmemory
 
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaType
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassFilterRequest
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassIdRequest
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassRequest
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassResponse
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassesResponse
-import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
-import ru.otus.otuskotlin.marketplace.stubs.DoYogaClassStub
+import ru.khrebtov.do_yoga.common.models.DoYogaType
+import ru.khrebtov.do_yoga.common.repo.DbClassFilterRequest
+import ru.khrebtov.do_yoga.common.repo.DbClassIdRequest
+import ru.khrebtov.do_yoga.common.repo.DbClassRequest
+import ru.khrebtov.do_yoga.common.repo.DbClassResponse
+import ru.khrebtov.do_yoga.common.repo.DbClassesResponse
+import ru.khrebtov.do_yoga.common.repo.IClassRepository
+import ru.khrebtov.do_yoga.DoYogaClassStub
 
 class ClassRepoStub() : IClassRepository {
     override suspend fun createClass(rq: DbClassRequest): DbClassResponse {

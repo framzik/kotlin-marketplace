@@ -1,7 +1,7 @@
 package ru.khrebtov.repo.inmemory
 
-import ru.otus.otuskotlin.marketplace.backend.repo.tests.RepoClassDeleteTest
-import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
+import ru.khrebtov.do_yoga.RepoClassDeleteTest
+import ru.khrebtov.do_yoga.common.repo.IClassRepository
 
 class ClassRepoInMemoryDeleteTest : RepoClassDeleteTest() {
     override val repo: IClassRepository = ClassRepoInMemory(

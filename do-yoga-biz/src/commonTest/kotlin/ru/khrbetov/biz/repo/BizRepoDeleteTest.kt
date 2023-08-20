@@ -6,11 +6,18 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.backend.repo.tests.ClassRepositoryMock
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.DoYogaCorSettings
-import ru.otus.otuskotlin.marketplace.common.models.*
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassResponse
+import ru.khrebtov.do_yoga.common.models.DoYogaClass
+import ru.khrebtov.do_yoga.common.models.DoYogaClassId
+import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.models.DoYogaType
+import ru.khrebtov.do_yoga.common.models.DoYogaVisibility
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.ClassRepositoryMock
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.DoYogaCorSettings
+import ru.khrebtov.do_yoga.common.repo.DbClassResponse
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizRepoDeleteTest {

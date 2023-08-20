@@ -1,6 +1,10 @@
 package ru.khrebtov.repo.inmemory.model
 
-import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.khrebtov.do_yoga.common.models.DoYogaClass
+import ru.khrebtov.do_yoga.common.models.DoYogaClassId
+import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
+import ru.khrebtov.do_yoga.common.models.DoYogaType
+import ru.khrebtov.do_yoga.common.models.DoYogaVisibility
 
 data class ClassEntity(
     val id: String? = null,

@@ -1,10 +1,8 @@
-package ru.otus.otuskotlin.marketplace.cor.handlers
+package ru.khrebtov.cor.handlers
 
 import ru.khrebtov.cor.CorDslMarker
 import ru.khrebtov.cor.ICorExec
 import ru.khrebtov.cor.ICorWorkerDsl
-import ru.khrebtov.cor.handlers.AbstractCorExec
-import ru.khrebtov.cor.handlers.CorExecDsl
 
 class CorWorker<T>(
     title: String,

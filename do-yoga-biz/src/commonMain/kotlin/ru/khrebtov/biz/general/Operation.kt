@@ -2,9 +2,9 @@ package ru.khrebtov.biz.general
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.chain
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
 
 fun ICorChainDsl<DoYogaContext>.operation(
     title: String,

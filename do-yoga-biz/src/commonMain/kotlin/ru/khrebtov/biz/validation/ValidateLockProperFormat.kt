@@ -2,10 +2,10 @@ package ru.khrebtov.biz.validation
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.worker
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.helpers.errorValidation
-import ru.otus.otuskotlin.marketplace.common.helpers.fail
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaClassLock
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.helpers.errorValidation
+import ru.khrebtov.do_yoga.common.helpers.fail
+import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
 
 fun ICorChainDsl<DoYogaContext>.validateLockProperFormat(title: String) = worker {
     this.title = title

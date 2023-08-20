@@ -2,11 +2,11 @@ package ru.khrebtov.biz.general
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.worker
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.helpers.errorAdministration
-import ru.otus.otuskotlin.marketplace.common.helpers.fail
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaWorkMode
-import ru.otus.otuskotlin.marketplace.common.repo.IClassRepository
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.helpers.errorAdministration
+import ru.khrebtov.do_yoga.common.helpers.fail
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.repo.IClassRepository
 
 fun ICorChainDsl<DoYogaContext>.initRepo(title: String) = worker {
     this.title = title
@@ -21,7 +21,7 @@ fun ICorChainDsl<DoYogaContext>.initRepo(title: String) = worker {
         }
         if (workMode != DoYogaWorkMode.STUB && classRepo == IClassRepository.NONE) fail(
             errorAdministration(
-                field = "repo",
+                field = "ru.khrebtov.do_yoga.common/repo",
                 violationCode = "dbNotConfigured",
                 description = "The database is unconfigured for chosen workmode ($workMode). " +
                         "Please, contact the administrator staff"

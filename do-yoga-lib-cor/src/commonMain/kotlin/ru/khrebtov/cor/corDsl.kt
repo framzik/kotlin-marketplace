@@ -1,7 +1,7 @@
 package ru.khrebtov.cor
 
 import ru.khrebtov.cor.handlers.CorChainDsl
-import ru.otus.otuskotlin.marketplace.cor.handlers.CorWorkerDsl
+import ru.khrebtov.cor.handlers.CorWorkerDsl
 import ru.khrebtov.cor.handlers.executeParallel
 
 /**

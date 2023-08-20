@@ -2,9 +2,9 @@ package ru.khrebtov.biz.repo
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.worker
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
-import ru.otus.otuskotlin.marketplace.common.repo.DbClassFilterRequest
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.repo.DbClassFilterRequest
 
 fun ICorChainDsl<DoYogaContext>.repoSearch(title: String) = worker {
     this.title = title
