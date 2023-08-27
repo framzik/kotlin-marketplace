@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController
 import ru.khrebtov.api.v1.models.ClassSignUpRequest
 import ru.khrebtov.api.v1.models.ClassSignUpResponse
 import ru.khrebtov.springapp.service.DoYogaClassBlockingProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportSignUp
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.fromTransport
+import ru.khrebtov.do_yoga.toTransportSignUp
 
 @RestController
 @RequestMapping("v1/class")

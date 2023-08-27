@@ -9,6 +9,10 @@ include("do-yoga-biz")
 include("class-app-spring")
 include("do-yoga-app-rabbit")
 include("do-yoga-lib-cor")
+include("do-yoga-repo-in-memory")
+include("do-yoga-repo-tests")
+include("do-yoga-repo-stubs")
+include("do-yoga-repo-postgresql")
 
 pluginManagement {
     val kotlinVersion: String by settings

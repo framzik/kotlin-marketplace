@@ -3,7 +3,7 @@ package ru.khrebtov.do_yoga.cor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.khrebtov.cor.handlers.CorChain
-import ru.otus.otuskotlin.marketplace.cor.handlers.CorWorker
+import ru.khrebtov.cor.handlers.CorWorker
 import ru.khrebtov.cor.handlers.executeSequential
 import kotlin.js.JsName
 import kotlin.test.Test

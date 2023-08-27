@@ -14,7 +14,7 @@ import ru.khrebtov.rabbitapp.config.RabbitConfig
 import ru.khrebtov.rabbitapp.config.RabbitExchangeConfiguration
 import ru.khrebtov.rabbitapp.config.rabbitLogger
 import kotlin.coroutines.CoroutineContext
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.DoYogaContext
 
 /**
  * Абстрактный класс для процессоров-консьюмеров RabbitMQ

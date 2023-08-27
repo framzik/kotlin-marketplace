@@ -4,16 +4,16 @@ import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Delivery
 import ru.khrebtov.api.v1.models.IRequest
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
+import ru.khrebtov.do_yoga.apiV1Mapper
 import ru.khrebtov.rabbitapp.RabbitProcessorBase
 import ru.khrebtov.rabbitapp.config.RabbitConfig
 import ru.khrebtov.rabbitapp.config.RabbitExchangeConfiguration
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.helpers.addError
-import ru.otus.otuskotlin.marketplace.common.helpers.asDoYogaError
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
-import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportClass
+import ru.khrebtov.do_yoga.common.helpers.addError
+import ru.khrebtov.do_yoga.common.helpers.asDoYogaError
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.fromTransport
+import ru.khrebtov.do_yoga.toTransportClass
 
 class RabbitDirectProcessorV1(
     config: RabbitConfig,

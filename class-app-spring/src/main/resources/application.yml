@@ -18,3 +18,12 @@ springdoc:
     urls:
       - name: v1
         url: specs-class-v1.yaml
+prod-repository: ${PROD_REPOSITORY:test}
+
+sql:
+  url: ${SQL_URL:jdbc:postgresql://localhost:54321/easy_yoga_db}
+  user: ${SQL_USER:postgres}
+  password: ${SQL_PASSWORD:postgres}
+  schema: ${SQL_SCHEMA:easy_yoga}
+  drop-database: ${SQL_DROP_DATABASE:false}
+  fast-migration: ${SQL_FAST_MIGRATION:true}

@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.serialization")
+    id("com.bmuschko.docker-spring-boot-application")
 }
 
 dependencies {
@@ -11,6 +12,7 @@ dependencies {
     val springdocOpenapiUiVersion: String by project
     val coroutinesVersion: String by project
     val serializationVersion: String by project
+    val postgresDriverVersion: String by project
 
     implementation("org.springframework.boot:spring-boot-starter-actuator") // info; refresh; springMvc output
     implementation("org.springframework.boot:spring-boot-starter-web") // Controller, Service, etc..
@@ -34,6 +36,11 @@ dependencies {
 
     // biz
     implementation(project(":do-yoga-biz"))
+    implementation(project(":do-yoga-repo-in-memory"))
+    // Repo
+    implementation(project(":do-yoga-repo-stubs"))
+    implementation(project(":do-yoga-repo-in-memory"))
+    implementation(project(":do-yoga-repo-postgresql"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -41,6 +48,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
     testImplementation("com.ninja-squad:springmockk:3.0.1") // mockking beans
+    testImplementation("org.postgresql:postgresql:$postgresDriverVersion")
 }
 
 tasks {
@@ -53,4 +61,13 @@ tasks {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+docker {
+    springBootApplication {
+        baseImage.set("openjdk:17")
+        ports.set(listOf(8080))
+        images.set(setOf("${project.name}:latest"))
+        jvmArgs.set(listOf("-XX:+UseContainerSupport"))
+    }
 }

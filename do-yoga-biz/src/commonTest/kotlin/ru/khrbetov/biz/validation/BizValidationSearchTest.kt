@@ -5,15 +5,20 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrebtov.backend.repository.inmemory.ClassRepoStub
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.*
+import ru.khrebtov.do_yoga.common.models.DoYogaClassFilter
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.DoYogaCorSettings
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationSearchTest {
 
     private val command = DoYogaCommand.SEARCH
-    private val processor by lazy { DoYogaClassProcessor() }
+    private val processor = DoYogaClassProcessor(DoYogaCorSettings(repoTest = ClassRepoStub()))
 
     @Test
     fun correctEmpty() = runTest {

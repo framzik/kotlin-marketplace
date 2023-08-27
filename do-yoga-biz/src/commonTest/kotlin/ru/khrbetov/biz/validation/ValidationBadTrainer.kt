@@ -6,9 +6,15 @@ import kotlin.test.assertNotEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.*
-import ru.otus.otuskotlin.marketplace.stubs.DoYogaClassStub
+import ru.khrebtov.do_yoga.common.models.DoYogaClass
+import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.models.DoYogaType
+import ru.khrebtov.do_yoga.common.models.DoYogaVisibility
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.DoYogaClassStub
 
 private val stub = DoYogaClassStub.get()
 
@@ -24,6 +30,7 @@ fun validationTrainerCorrect(command: DoYogaCommand, processor: DoYogaClassProce
             trainer = "trainer",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -44,6 +51,7 @@ fun validationTrainerTrim(command: DoYogaCommand, processor: DoYogaClassProcesso
             trainer = " \n\tabc \n\t",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -64,6 +72,7 @@ fun validationTrainerEmpty(command: DoYogaCommand, processor: DoYogaClassProcess
             trainer = "",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -86,6 +95,7 @@ fun validationTrainerSymbols(command: DoYogaCommand, processor: DoYogaClassProce
             trainer = "!@#$%^&*(),.{}",
             classType = DoYogaType.PERSONAL,
             visibility = DoYogaVisibility.VISIBLE_PUBLIC,
+            lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

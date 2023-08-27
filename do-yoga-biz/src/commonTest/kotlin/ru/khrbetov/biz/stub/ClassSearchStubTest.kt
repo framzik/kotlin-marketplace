@@ -7,10 +7,14 @@ import kotlin.test.fail
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.*
-import ru.otus.otuskotlin.marketplace.common.stubs.DoYogaStubs
-import ru.otus.otuskotlin.marketplace.stubs.DoYogaClassStub
+import ru.khrebtov.do_yoga.common.models.DoYogaClass
+import ru.khrebtov.do_yoga.common.models.DoYogaClassFilter
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.stubs.DoYogaStubs
+import ru.khrebtov.do_yoga.DoYogaClassStub
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ClassSearchStubTest {

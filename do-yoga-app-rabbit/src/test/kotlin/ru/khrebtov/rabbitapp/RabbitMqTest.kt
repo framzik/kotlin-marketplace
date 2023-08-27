@@ -23,8 +23,8 @@ import ru.khrebtov.rabbitapp.config.RabbitConfig.Companion.RABBIT_USER
 import ru.khrebtov.rabbitapp.config.RabbitExchangeConfiguration
 import ru.khrebtov.rabbitapp.controller.RabbitController
 import ru.khrebtov.rabbitapp.processor.RabbitDirectProcessorV1
-import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
-import ru.otus.otuskotlin.marketplace.stubs.DoYogaClassStub
+import ru.khrebtov.do_yoga.apiV1Mapper
+import ru.khrebtov.do_yoga.DoYogaClassStub
 
 class RabbitMqTest {
 

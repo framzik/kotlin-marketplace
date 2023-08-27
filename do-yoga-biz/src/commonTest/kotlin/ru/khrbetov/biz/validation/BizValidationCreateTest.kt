@@ -2,14 +2,17 @@ package ru.khrbetov.biz.validation
 
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.khrebtov.backend.repository.inmemory.ClassRepoStub
 import ru.khrebtov.biz.DoYogaClassProcessor
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaCommand
+import ru.khrebtov.do_yoga.common.DoYogaCorSettings
+import ru.khrebtov.do_yoga.common.models.DoYogaCommand
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationCreateTest {
 
     private val command = DoYogaCommand.CREATE
-    private val processor by lazy { DoYogaClassProcessor() }
+    private val processor = DoYogaClassProcessor(DoYogaCorSettings(repoTest = ClassRepoStub()))
+
 
     @Test
     fun correctOfficeAddress() = validationOfficeAddressCorrect(command, processor)

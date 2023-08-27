@@ -1,6 +1,7 @@
 package ru.khrebtov.springapp.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.ninjasquad.springmockk.MockkBean
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -16,9 +17,15 @@ import ru.khrebtov.api.v1.models.ClassReadRequest
 import ru.khrebtov.api.v1.models.ClassSearchRequest
 import ru.khrebtov.api.v1.models.ClassSignUpRequest
 import ru.khrebtov.api.v1.models.ClassUpdateRequest
+import ru.khrebtov.do_yoga.backend.repo.sql.RepoClassSQL
 import ru.khrebtov.springapp.service.DoYogaClassBlockingProcessor
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.mappers.v1.*
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.toTransportCreate
+import ru.khrebtov.do_yoga.toTransportDelete
+import ru.khrebtov.do_yoga.toTransportRead
+import ru.khrebtov.do_yoga.toTransportSearch
+import ru.khrebtov.do_yoga.toTransportSignUp
+import ru.khrebtov.do_yoga.toTransportUpdate
 
 @WebMvcTest(ClassController::class, SignUpController::class)
 internal class ClassControllerTest {
@@ -30,6 +37,9 @@ internal class ClassControllerTest {
 
     @MockBean
     private lateinit var processor: DoYogaClassBlockingProcessor
+
+    @MockkBean
+    private lateinit var repo: RepoClassSQL
 
     @Test
     fun createAd() = testStubClass(

@@ -20,6 +20,10 @@ kotlin {
                 implementation(project(":do-yoga-common"))
                 implementation(project(":do-yoga-stubs"))
                 implementation(project(":do-yoga-lib-cor"))
+
+                implementation(project(":do-yoga-repo-tests"))
+                implementation(project(":do-yoga-repo-stubs"))
+                implementation(project(":do-yoga-repo-in-memory"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

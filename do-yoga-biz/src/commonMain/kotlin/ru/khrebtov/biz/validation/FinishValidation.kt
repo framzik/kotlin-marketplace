@@ -2,8 +2,8 @@ package ru.khrebtov.biz.validation
 
 import ru.khrebtov.cor.ICorChainDsl
 import ru.khrebtov.cor.worker
-import ru.otus.otuskotlin.marketplace.common.DoYogaContext
-import ru.otus.otuskotlin.marketplace.common.models.DoYogaState
+import ru.khrebtov.do_yoga.common.DoYogaContext
+import ru.khrebtov.do_yoga.common.models.DoYogaState
 
 fun ICorChainDsl<DoYogaContext>.finishClassValidation(title: String) = worker {
     this.title = title
