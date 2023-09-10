@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -55,6 +56,7 @@ class BizRepoCreateTest {
                 visibility = DoYogaVisibility.VISIBLE_PUBLIC,
             ),
         )
+        ctx.addTestPrincipal()
         processor.exec(ctx)
         assertEquals(DoYogaState.FINISHING, ctx.state)
         assertNotEquals(DoYogaClassId.NONE, ctx.classResponse.id)

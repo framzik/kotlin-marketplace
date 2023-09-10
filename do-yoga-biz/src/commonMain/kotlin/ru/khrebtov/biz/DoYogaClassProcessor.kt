@@ -46,6 +46,10 @@ import ru.khrebtov.do_yoga.common.models.DoYogaClassId
 import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
 import ru.khrebtov.do_yoga.common.models.DoYogaCommand
 import ru.khrebtov.do_yoga.common.models.DoYogaState
+import ru.khrebtov.biz.permissions.accessValidation
+import ru.khrebtov.biz.permissions.chainPermissions
+import ru.khrebtov.biz.permissions.frontPermissions
+import ru.khrebtov.biz.permissions.searchTypes
 
 class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()) {
     suspend fun exec(ctx: DoYogaContext) = BusinessChain.exec(ctx.apply { this.settings = this@DoYogaClassProcessor.settings })
@@ -74,11 +78,14 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
 
                     finishClassValidation("Завершение проверок")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
+                    accessValidation("Вычисление прав доступа")
                     repoCreate("Создание класса в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить класс", DoYogaCommand.READ) {
@@ -96,15 +103,18 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
 
                     finishClassValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение класса из БД")
+                    accessValidation("Вычисление прав доступа")
                     worker {
                         title = "Подготовка ответа для Read"
                         on { state == DoYogaState.RUNNING }
                         handle { classRepoDone = classRepoRead }
                     }
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Изменить класс", DoYogaCommand.UPDATE) {
@@ -132,12 +142,15 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                     validateTrainerHasContent("Проверка символов")
 
                     finishClassValidation("Успешное завершение процедуры валидации")
+                    chainPermissions("Вычисление разрешений для пользователя")
                     chain {
                         title = "Логика сохранения"
                         repoRead("Чтение класса из БД")
+                        accessValidation("Вычисление прав доступа")
                         repoPrepareUpdate("Подготовка объекта для обновления")
                         repoUpdate("Обновление класса в БД")
                     }
+                    frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                     prepareResult("Подготовка ответа")
                 }
             }
@@ -159,12 +172,15 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                     validateLockNotEmpty("Проверка на непустой lock")
                     validateLockProperFormat("Проверка формата lock")
                     finishClassValidation("Успешное завершение процедуры валидации")
+                    chainPermissions("Вычисление разрешений для пользователя")
                     chain {
                         title = "Логика удаления"
                         repoRead("Чтение объявления из БД")
+                        accessValidation("Вычисление прав доступа")
                         repoPrepareDelete("Подготовка объекта для удаления")
                         repoDelete("Удаление класса из БД")
                     }
+                    frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                     prepareResult("Подготовка ответа")
                 }
             }
@@ -181,10 +197,12 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                     }
 
                     finishClassFilterValidation("Успешное завершение процедуры валидации")
-                    repoSearch("Поиск объявления в БД по фильтру")
-                    prepareResult("Подготовка ответа")
                 }
-
+                chainPermissions("Вычисление разрешений для пользователя")
+                searchTypes("Подготовка поискового запроса")
+                repoSearch("Поиск объявления в БД по фильтру")
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
+                prepareResult("Подготовка ответа")
             }
             operation("Поиск подходящих классов для занятий", DoYogaCommand.SIGN_UP) {
                 stubs("Обработка стабов") {
@@ -201,12 +219,15 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
 
                     finishClassValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика поиска в БД"
                     repoRead("Чтение класса из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareSigUp("Подготовка данных для поиска предложений")
                     repoSignUp("Поиск предложений для класса в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

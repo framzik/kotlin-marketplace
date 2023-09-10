@@ -1,6 +1,7 @@
 package ru.khrebtov.do_yoga.common.models
 
 import kotlinx.datetime.LocalDateTime
+import ru.khrebtov.do_yoga.common.permissions.DoYogaPrincipalRelations
 
 
 data class DoYogaClass(
@@ -12,7 +13,8 @@ data class DoYogaClass(
     var students: Set<String>? = null,
     var time: LocalDateTime? = null,
     var lock: DoYogaClassLock = DoYogaClassLock.NONE,
-    val permissionsClient: MutableSet<DoYogaClassPermissionClient> = mutableSetOf()
+    val permissionsClient: MutableSet<DoYogaClassPermissionClient> = mutableSetOf(),
+    var principalRelations: Set<DoYogaPrincipalRelations> = emptySet(),
 ){
     fun deepCopy(): DoYogaClass = copy(
         permissionsClient = permissionsClient.toMutableSet(),

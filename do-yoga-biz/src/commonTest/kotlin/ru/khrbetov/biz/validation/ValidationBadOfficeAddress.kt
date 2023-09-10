@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -34,6 +35,7 @@ fun validationOfficeAddressCorrect(command: DoYogaCommand, processor: DoYogaClas
             lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(DoYogaState.FAILING, ctx.state)
@@ -55,6 +57,7 @@ fun validationOfficeAddressTrim(command: DoYogaCommand, processor: DoYogaClassPr
             lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(DoYogaState.FAILING, ctx.state)

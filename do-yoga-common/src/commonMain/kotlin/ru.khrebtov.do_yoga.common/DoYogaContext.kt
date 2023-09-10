@@ -10,6 +10,8 @@ import ru.khrebtov.do_yoga.common.models.DoYogaState
 import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
 import ru.khrebtov.do_yoga.common.repo.IClassRepository
 import ru.khrebtov.do_yoga.common.stubs.DoYogaStubs
+import ru.khrebtov.do_yoga.common.permissions.DoYogaPrincipalModel
+import ru.khrebtov.do_yoga.common.permissions.DoYogaUserPermissions
 
 data class DoYogaContext(
     var command: DoYogaCommand = DoYogaCommand.NONE,
@@ -25,6 +27,10 @@ data class DoYogaContext(
     var classRepoPrepare: DoYogaClass = DoYogaClass(),
     var classRepoDone: DoYogaClass = DoYogaClass(),
     var classesRepoDone: MutableList<DoYogaClass> = mutableListOf(),
+
+    var principal: DoYogaPrincipalModel = DoYogaPrincipalModel.NONE,
+    val permissionsChain: MutableSet<DoYogaUserPermissions> = mutableSetOf(),
+    var permitted: Boolean = false,
 
     var requestId: DoYogaRequestId = DoYogaRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
