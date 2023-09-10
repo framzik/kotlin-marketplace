@@ -48,9 +48,9 @@ class RepoClassSQL(
         }
     }
 
-    private fun createClass(ad: DoYogaClass): DoYogaClass {
+    private fun createClass(doYogaClass: DoYogaClass): DoYogaClass {
         val res = ClassTable.insert {
-            to(it, ad, randomUuid)
+            to(it, doYogaClass, randomUuid)
         }
 
         return ClassTable.from(res)
