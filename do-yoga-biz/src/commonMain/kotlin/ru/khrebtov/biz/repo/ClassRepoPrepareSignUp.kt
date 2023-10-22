@@ -10,7 +10,11 @@ fun ICorChainDsl<DoYogaContext>.repoPrepareSigUp(title: String) = worker {
     description = "Готовим данные к поиску предложений в БД"
     on { state == DoYogaState.RUNNING }
     handle {
-        classRepoPrepare = classRepoRead.deepCopy()
-        classRepoDone = classRepoRead.deepCopy()
+        val newStudents = mutableSetOf<String>()
+        classValidated.students?.let { newStudents.addAll(it) }
+        classRepoRead.students?.let { newStudents.addAll(it) }
+        classRepoPrepare = classRepoRead.deepCopy().apply {
+            students = newStudents
+        }
     }
 }

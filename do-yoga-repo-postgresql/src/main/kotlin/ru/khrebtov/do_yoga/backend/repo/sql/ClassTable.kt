@@ -15,10 +15,11 @@ import ru.khrebtov.do_yoga.common.models.DoYogaVisibility
 
 object ClassTable : Table("class") {
     val id = varchar("id", 128)
-    val officeAddress = varchar("title", 128)
+    val officeAddress = varchar("officeAddress", 128)
     val trainer = varchar("description", 128)
     val visibility = enumeration("visibility", DoYogaVisibility::class)
     val classType = enumeration("class_type", DoYogaType::class)
+    val students = varchar("students", 2500)
     var time = datetime("classTime")
     val lock = varchar("lock", 50)
 
@@ -30,6 +31,7 @@ object ClassTable : Table("class") {
         trainer = res[trainer],
         visibility = res[visibility],
         classType = res[classType],
+        students = res[students].let { res[students].split(',').filter{it.isNotBlank()}.sorted().toSet() },
         time = res[time].toKotlinLocalDateTime(),
         lock = DoYogaClassLock(res[lock])
     )
@@ -40,6 +42,7 @@ object ClassTable : Table("class") {
         trainer = res[trainer],
         visibility = res[visibility],
         classType = res[classType],
+        students = res[students].let { res[students].split(',').filter{it.isNotBlank()}.sorted().toSet() },
         time = res[time].toKotlinLocalDateTime(),
         lock = DoYogaClassLock(res[lock])
     )
@@ -50,7 +53,15 @@ object ClassTable : Table("class") {
         it[trainer] = doYogaClass.trainer ?: ""
         it[visibility] = doYogaClass.visibility
         it[classType] = doYogaClass.classType
+        it[students] = initStudents(doYogaClass)
         it[time] = doYogaClass.time?.toJavaLocalDateTime() ?: java.time.LocalDateTime.now()
         it[lock] = doYogaClass.lock.takeIf { it != DoYogaClassLock.NONE }?.asString() ?: randomUuid()
+    }
+
+    private fun initStudents(doYogaClass: DoYogaClass): String {
+        val sb = StringBuilder()
+        doYogaClass.students?.forEach { sb.append("$it,") }
+
+        return sb.toString()
     }
 }

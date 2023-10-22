@@ -343,7 +343,13 @@ components:
               $ref: '#/components/schemas/ClassSearchFilter'
 
     ClassSignUpObject:
-      $ref: '#/components/schemas/ClassReadObject'
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ClassId'
+            student:
+              $ref: '#/components/schemas/UserId'
 
     ClassSignUpRequest:
       allOf:

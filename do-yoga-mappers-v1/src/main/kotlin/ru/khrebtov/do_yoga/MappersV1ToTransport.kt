@@ -44,35 +44,35 @@ fun DoYogaContext.toTransportCreate() = ClassCreateResponse(
 
 fun DoYogaContext.toTransportRead() = ClassReadResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportUpdate() = ClassUpdateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportDelete() = ClassDeleteResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportSearch() = ClassSearchResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     classes = classesResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportSignUp() = ClassSignUpResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )

@@ -9,6 +9,8 @@ import ru.khrebtov.api.v1.models.ClassReadRequest
 import ru.khrebtov.api.v1.models.ClassReadResponse
 import ru.khrebtov.api.v1.models.ClassSearchRequest
 import ru.khrebtov.api.v1.models.ClassSearchResponse
+import ru.khrebtov.api.v1.models.ClassSignUpRequest
+import ru.khrebtov.api.v1.models.ClassSignUpResponse
 import ru.khrebtov.api.v1.models.ClassUpdateRequest
 import ru.khrebtov.api.v1.models.ClassUpdateResponse
 import ru.otus.otuskotlin.marketplace.app.common.DoYogaAppSettings
@@ -37,5 +39,9 @@ class ClassController(
 
     @PostMapping("search")
     suspend fun searchClass(@RequestBody request: ClassSearchRequest): ClassSearchResponse =
+        processV1(appSettings, request)
+
+    @PostMapping("sign_up")
+    suspend fun classSignUp(@RequestBody request: ClassSignUpRequest): ClassSignUpResponse =
         processV1(appSettings, request)
 }

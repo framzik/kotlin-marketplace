@@ -58,6 +58,11 @@ private val accessTable = mapOf(
         permission = DoYogaUserPermissions.READ_PUBLIC,
         relation = DoYogaPrincipalRelations.GROUP,
     ) to true,
+    AccessTableConditions(
+        command = DoYogaCommand.UPDATE,
+        permission = DoYogaUserPermissions.READ_PUBLIC,
+        relation = DoYogaPrincipalRelations.NONE,
+    ) to true,
 
     // Delete
     AccessTableConditions(
@@ -76,5 +81,10 @@ private val accessTable = mapOf(
         command = DoYogaCommand.SIGN_UP,
         permission = DoYogaUserPermissions.READ_PUBLIC,
         relation = DoYogaPrincipalRelations.PUBLIC,
+    ) to true,
+    AccessTableConditions(
+        command = DoYogaCommand.SIGN_UP,
+        permission = DoYogaUserPermissions.READ_PUBLIC,
+        relation = DoYogaPrincipalRelations.NONE,
     ) to true,
 )

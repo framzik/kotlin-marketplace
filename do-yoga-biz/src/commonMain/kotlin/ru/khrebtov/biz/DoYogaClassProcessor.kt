@@ -4,10 +4,25 @@ import ru.khrebtov.biz.general.initRepo
 import ru.khrebtov.biz.general.operation
 import ru.khrebtov.biz.general.prepareResult
 import ru.khrebtov.biz.general.stubs
+import ru.khrebtov.biz.permissions.accessValidation
+import ru.khrebtov.biz.permissions.chainPermissions
+import ru.khrebtov.biz.permissions.frontPermissions
+import ru.khrebtov.biz.permissions.searchTypes
+import ru.khrebtov.biz.repo.repoCreate
+import ru.khrebtov.biz.repo.repoDelete
+import ru.khrebtov.biz.repo.repoPrepareCreate
+import ru.khrebtov.biz.repo.repoPrepareDelete
+import ru.khrebtov.biz.repo.repoPrepareSigUp
+import ru.khrebtov.biz.repo.repoPrepareUpdate
+import ru.khrebtov.biz.repo.repoRead
+import ru.khrebtov.biz.repo.repoSearch
+import ru.khrebtov.biz.repo.repoUpdate
 import ru.khrebtov.biz.validation.finishClassFilterValidation
 import ru.khrebtov.biz.validation.finishClassValidation
 import ru.khrebtov.biz.validation.validateIdNotEmpty
 import ru.khrebtov.biz.validation.validateIdProperFormat
+import ru.khrebtov.biz.validation.validateLockNotEmpty
+import ru.khrebtov.biz.validation.validateLockProperFormat
 import ru.khrebtov.biz.validation.validateOfficeAddressHasContent
 import ru.khrebtov.biz.validation.validateOfficeAddressNotEmpty
 import ru.khrebtov.biz.validation.validateTrainerHasContent
@@ -25,34 +40,19 @@ import ru.khrebtov.biz.workers.stubUpdateSuccess
 import ru.khrebtov.biz.workers.stubValidationBadId
 import ru.khrebtov.biz.workers.stubValidationBadOfficeAddress
 import ru.khrebtov.biz.workers.stubValidationBadTrainer
+import ru.khrebtov.cor.chain
 import ru.khrebtov.cor.rootChain
 import ru.khrebtov.cor.worker
-import ru.khrebtov.biz.repo.repoCreate
-import ru.khrebtov.biz.repo.repoDelete
-import ru.khrebtov.biz.repo.repoSignUp
-import ru.khrebtov.biz.repo.repoPrepareCreate
-import ru.khrebtov.biz.repo.repoPrepareDelete
-import ru.khrebtov.biz.repo.repoPrepareSigUp
-import ru.khrebtov.biz.repo.repoPrepareUpdate
-import ru.khrebtov.biz.repo.repoRead
-import ru.khrebtov.biz.repo.repoSearch
-import ru.khrebtov.biz.repo.repoUpdate
-import ru.khrebtov.biz.validation.validateLockNotEmpty
-import ru.khrebtov.biz.validation.validateLockProperFormat
-import ru.khrebtov.cor.chain
 import ru.khrebtov.do_yoga.common.DoYogaContext
 import ru.khrebtov.do_yoga.common.DoYogaCorSettings
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
 import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
 import ru.khrebtov.do_yoga.common.models.DoYogaCommand
 import ru.khrebtov.do_yoga.common.models.DoYogaState
-import ru.khrebtov.biz.permissions.accessValidation
-import ru.khrebtov.biz.permissions.chainPermissions
-import ru.khrebtov.biz.permissions.frontPermissions
-import ru.khrebtov.biz.permissions.searchTypes
 
 class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()) {
-    suspend fun exec(ctx: DoYogaContext) = BusinessChain.exec(ctx.apply { this.settings = this@DoYogaClassProcessor.settings })
+    suspend fun exec(ctx: DoYogaContext) =
+        BusinessChain.exec(ctx.apply { this.settings = this@DoYogaClassProcessor.settings })
 
     companion object {
         private val BusinessChain = rootChain<DoYogaContext> {
@@ -129,7 +129,9 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                 validation {
                     worker("Копируем поля в classValidating") { classValidating = classRequest.deepCopy() }
                     worker("Очистка id") { classValidating.id = DoYogaClassId(classValidating.id.asString().trim()) }
-                    worker("Очистка lock") { classValidating.lock = DoYogaClassLock(classValidating.lock.asString().trim()) }
+                    worker("Очистка lock") {
+                        classValidating.lock = DoYogaClassLock(classValidating.lock.asString().trim())
+                    }
                     worker("Очистка адреса") { classValidating.officeAddress = classValidating.officeAddress?.trim() }
                     worker("Очистка тренера") { classValidating.trainer = classValidating.trainer?.trim() }
                     validateIdNotEmpty("Проверка на непустой id")
@@ -166,7 +168,9 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                         classValidating = classRequest.deepCopy()
                     }
                     worker("Очистка id") { classValidating.id = DoYogaClassId(classValidating.id.asString().trim()) }
-                    worker("Очистка lock") { classValidating.lock = DoYogaClassLock(classValidating.lock.asString().trim()) }
+                    worker("Очистка lock") {
+                        classValidating.lock = DoYogaClassLock(classValidating.lock.asString().trim())
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
                     validateLockNotEmpty("Проверка на непустой lock")
@@ -225,7 +229,7 @@ class DoYogaClassProcessor(val settings: DoYogaCorSettings = DoYogaCorSettings()
                     repoRead("Чтение класса из БД")
                     accessValidation("Вычисление прав доступа")
                     repoPrepareSigUp("Подготовка данных для поиска предложений")
-                    repoSignUp("Поиск предложений для класса в БД")
+                    repoUpdate("Обновление класса в БД")
                 }
                 frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
