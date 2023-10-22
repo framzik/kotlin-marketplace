@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":do-yoga-repo-stubs"))
     implementation(project(":do-yoga-repo-in-memory"))
     implementation(project(":do-yoga-repo-postgresql"))
+    implementation(project(":do-yoga-app-common"))
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")

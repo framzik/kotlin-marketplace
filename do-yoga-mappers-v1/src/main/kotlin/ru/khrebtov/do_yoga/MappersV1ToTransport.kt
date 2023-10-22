@@ -20,6 +20,7 @@ import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
 import ru.khrebtov.do_yoga.common.models.DoYogaClassPermissionClient
 import ru.khrebtov.do_yoga.common.models.DoYogaCommand
 import ru.khrebtov.do_yoga.common.models.DoYogaError
+import ru.khrebtov.do_yoga.common.models.DoYogaState
 import ru.khrebtov.do_yoga.common.models.DoYogaType
 import ru.khrebtov.do_yoga.common.models.DoYogaVisibility
 import ru.khrebtov.do_yoga.exceptions.UnknownDoYogaCommand
@@ -36,42 +37,42 @@ fun DoYogaContext.toTransportClass(): IResponse = when (val cmd = command) {
 
 fun DoYogaContext.toTransportCreate() = ClassCreateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportRead() = ClassReadResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportUpdate() = ClassUpdateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportDelete() = ClassDeleteResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportSearch() = ClassSearchResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     classes = classesResponse.toTransportClass()
 )
 
 fun DoYogaContext.toTransportSignUp() = ClassSignUpResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == ru.khrebtov.do_yoga.common.models.DoYogaState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     propertyClass = classResponse.toTransportClass()
 )

@@ -9,58 +9,39 @@ import ru.khrebtov.api.v1.models.ClassReadRequest
 import ru.khrebtov.api.v1.models.ClassReadResponse
 import ru.khrebtov.api.v1.models.ClassSearchRequest
 import ru.khrebtov.api.v1.models.ClassSearchResponse
+import ru.khrebtov.api.v1.models.ClassSignUpRequest
+import ru.khrebtov.api.v1.models.ClassSignUpResponse
 import ru.khrebtov.api.v1.models.ClassUpdateRequest
 import ru.khrebtov.api.v1.models.ClassUpdateResponse
-import ru.khrebtov.springapp.service.DoYogaClassBlockingProcessor
-import ru.khrebtov.do_yoga.common.DoYogaContext
-import ru.khrebtov.do_yoga.fromTransport
-import ru.khrebtov.do_yoga.toTransportCreate
-import ru.khrebtov.do_yoga.toTransportDelete
-import ru.khrebtov.do_yoga.toTransportRead
-import ru.khrebtov.do_yoga.toTransportSearch
-import ru.khrebtov.do_yoga.toTransportUpdate
+import ru.otus.otuskotlin.marketplace.app.common.DoYogaAppSettings
 
 @RestController
 @RequestMapping("v1/class")
-class ClassController(private val processor: DoYogaClassBlockingProcessor) {
+class ClassController(
+    private val appSettings: DoYogaAppSettings
+) {
 
     @PostMapping("create")
-    fun createAd(@RequestBody request: ClassCreateRequest): ClassCreateResponse {
-        val context = DoYogaContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportCreate()
-    }
+    suspend fun createClass(@RequestBody request: ClassCreateRequest): ClassCreateResponse =
+        processV1(appSettings, request)
+
 
     @PostMapping("read")
-    fun readAd(@RequestBody request: ClassReadRequest): ClassReadResponse {
-        val context = DoYogaContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportRead()
-    }
+    suspend fun readClass(@RequestBody request: ClassReadRequest): ClassReadResponse = processV1(appSettings, request)
 
     @RequestMapping("update", method = [RequestMethod.POST])
-    fun updateAd(@RequestBody request: ClassUpdateRequest): ClassUpdateResponse {
-        val context = DoYogaContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportUpdate()
-    }
+    suspend fun updateClass(@RequestBody request: ClassUpdateRequest): ClassUpdateResponse =
+        processV1(appSettings, request)
 
     @PostMapping("delete")
-    fun deleteAd(@RequestBody request: ClassDeleteRequest): ClassDeleteResponse {
-        val context = DoYogaContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportDelete()
-    }
+    suspend fun deleteClass(@RequestBody request: ClassDeleteRequest): ClassDeleteResponse =
+        processV1(appSettings, request)
 
     @PostMapping("search")
-    fun searchAd(@RequestBody request: ClassSearchRequest): ClassSearchResponse {
-        val context = DoYogaContext()
-        context.fromTransport(request)
-        processor.exec(context)
-        return context.toTransportSearch()
-    }
+    suspend fun searchClass(@RequestBody request: ClassSearchRequest): ClassSearchResponse =
+        processV1(appSettings, request)
+
+    @PostMapping("sign_up")
+    suspend fun classSignUp(@RequestBody request: ClassSignUpRequest): ClassSignUpResponse =
+        processV1(appSettings, request)
 }

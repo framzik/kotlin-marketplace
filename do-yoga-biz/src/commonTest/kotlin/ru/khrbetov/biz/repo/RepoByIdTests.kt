@@ -3,6 +3,7 @@ package ru.khrbetov.biz.repo
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -61,6 +62,7 @@ fun repoNotFoundTest(command: DoYogaCommand) = runTest {
             lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(DoYogaState.FAILING, ctx.state)
     assertEquals(DoYogaClass(), ctx.classResponse)

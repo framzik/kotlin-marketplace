@@ -6,6 +6,7 @@ import ru.khrebtov.do_yoga.common.DoYogaContext
 import ru.khrebtov.do_yoga.common.helpers.errorAdministration
 import ru.khrebtov.do_yoga.common.helpers.fail
 import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
+import ru.khrebtov.do_yoga.common.permissions.DoYogaUserGroups
 import ru.khrebtov.do_yoga.common.repo.IClassRepository
 
 fun ICorChainDsl<DoYogaContext>.initRepo(title: String) = worker {
@@ -17,6 +18,7 @@ fun ICorChainDsl<DoYogaContext>.initRepo(title: String) = worker {
         classRepo = when {
             workMode == DoYogaWorkMode.TEST -> settings.repoTest
             workMode == DoYogaWorkMode.STUB -> settings.repoStub
+            principal.groups.contains(DoYogaUserGroups.TEST) -> settings.repoTest
             else -> settings.repoProd
         }
         if (workMode != DoYogaWorkMode.STUB && classRepo == IClassRepository.NONE) fail(

@@ -12,6 +12,7 @@ import ru.khrebtov.do_yoga.backend.repo.sql.SqlProperties
 import ru.khrebtov.do_yoga.common.DoYogaCorSettings
 import ru.khrebtov.do_yoga.common.repo.IClassRepository
 import ru.khrebtov.repo.inmemory.ClassRepoInMemory
+import ru.otus.otuskotlin.marketplace.app.common.DoYogaAppSettings
 
 @Configuration
 @EnableConfigurationProperties(SqlPropertiesEx::class)
@@ -19,6 +20,9 @@ class AppConfig {
 
     @Bean
     fun processor(corSettings: DoYogaCorSettings) = DoYogaClassProcessor(corSettings)
+    @Bean(name = ["prodRepository"])
+    @ConditionalOnProperty(value = ["prod-repository"], havingValue = "sql")
+    fun prodRepository(sqlProperties: SqlProperties) = RepoClassSQL(sqlProperties)
 
     @Bean
     fun corSettings(
@@ -31,10 +35,11 @@ class AppConfig {
         repoTest = testRepository,
     )
 
-    @Bean(name = ["prodRepository"])
-    @ConditionalOnProperty(value = ["prod-repository"], havingValue = "sql")
-    fun prodRepository(sqlProperties: SqlProperties) = RepoClassSQL(sqlProperties)
-
+    @Bean
+    fun appSettings(corSettings: DoYogaCorSettings, processor: DoYogaClassProcessor) = DoYogaAppSettings(
+        processor = processor,
+        corSettings = corSettings
+    )
     @Bean
     fun testRepository() = ClassRepoInMemory()
 

@@ -13,6 +13,7 @@ import ru.khrebtov.api.v1.models.ClassRequestDebugMode
 import ru.khrebtov.api.v1.models.ClassRequestDebugStubs
 import ru.khrebtov.api.v1.models.ClassSearchFilter
 import ru.khrebtov.api.v1.models.ClassSearchRequest
+import ru.khrebtov.api.v1.models.ClassSignUpObject
 import ru.khrebtov.api.v1.models.ClassSignUpRequest
 import ru.khrebtov.api.v1.models.ClassType
 import ru.khrebtov.api.v1.models.ClassUpdateObject
@@ -123,10 +124,15 @@ fun DoYogaContext.fromTransport(request: ClassSearchRequest) {
 fun DoYogaContext.fromTransport(request: ClassSignUpRequest) {
     command = DoYogaCommand.SIGN_UP
     requestId = request.requestId()
-    classRequest = request.propertyClass?.id.toClassWithId()
+    classRequest = request.propertyClass.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
+
+private fun ClassSignUpObject?.toInternal() = DoYogaClass(
+    id = this?.id.toClassId(),
+    students = setOf(this?.student ?: "")
+)
 
 private fun ClassSearchFilter?.toInternal(): DoYogaClassFilter = DoYogaClassFilter(
     searchString = this?.searchString ?: ""

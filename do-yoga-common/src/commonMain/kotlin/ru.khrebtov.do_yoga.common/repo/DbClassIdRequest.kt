@@ -8,5 +8,5 @@ data class DbClassIdRequest(
     val id: DoYogaClassId,
     val lock: DoYogaClassLock = DoYogaClassLock.NONE,
 ) {
-    constructor(ad: DoYogaClass) : this(ad.id, ad.lock)
+    constructor(doYogaClass: DoYogaClass) : this(doYogaClass.id, doYogaClass.lock)
 }

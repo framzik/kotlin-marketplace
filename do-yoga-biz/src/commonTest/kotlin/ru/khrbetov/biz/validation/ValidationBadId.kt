@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -27,6 +28,7 @@ fun validationIdCorrect(command: DoYogaCommand, processor: DoYogaClassProcessor)
             lock = DoYogaClassLock("123-234-abc-ABC")
         },
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(DoYogaState.FAILING, ctx.state)
@@ -49,6 +51,7 @@ fun validationIdTrim(command: DoYogaCommand, processor: DoYogaClassProcessor) = 
             lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(DoYogaState.FAILING, ctx.state)
@@ -71,6 +74,7 @@ fun validationIdEmpty(command: DoYogaCommand, processor: DoYogaClassProcessor) =
             lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
     assertEquals(DoYogaState.FAILING, ctx.state)
@@ -96,6 +100,7 @@ fun validationIdFormat(command: DoYogaCommand, processor: DoYogaClassProcessor) 
             lock = DoYogaClassLock("123-234-abc-ABC"),
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
     assertEquals(DoYogaState.FAILING, ctx.state)

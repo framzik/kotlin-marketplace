@@ -6,10 +6,6 @@ import ru.khrebtov.backend.repository.inmemory.ClassRepoStub
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.DoYogaCorSettings
 import ru.khrebtov.do_yoga.common.models.DoYogaCommand
-import validation.validationLockCorrect
-import validation.validationLockEmpty
-import validation.validationLockFormat
-import validation.validationLockTrim
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationDeleteTest {

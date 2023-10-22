@@ -13,6 +13,7 @@ fun ICorChainDsl<DoYogaContext>.repoPrepareUpdate(title: String) = worker {
     handle {
         classRepoPrepare = classRepoRead.deepCopy().apply {
             this.officeAddress = classValidated.officeAddress
+            students = classValidated.students
             trainer = classValidated.trainer
             classType = classValidated.classType
             visibility = classValidated.visibility

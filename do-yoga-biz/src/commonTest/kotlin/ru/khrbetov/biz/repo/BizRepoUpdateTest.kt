@@ -8,6 +8,7 @@ import ru.khrebtov.do_yoga.common.DoYogaCorSettings
 import ru.khrebtov.do_yoga.common.repo.DbClassResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -15,12 +16,13 @@ import ru.khrebtov.do_yoga.common.models.DoYogaClassLock
 import ru.khrebtov.do_yoga.common.models.DoYogaCommand
 import ru.khrebtov.do_yoga.common.models.DoYogaState
 import ru.khrebtov.do_yoga.common.models.DoYogaType
+import ru.khrebtov.do_yoga.common.models.DoYogaUserId
 import ru.khrebtov.do_yoga.common.models.DoYogaVisibility
 import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizRepoUpdateTest {
-
+    private val userId = DoYogaUserId("321")
     private val command = DoYogaCommand.UPDATE
     private val initClass = DoYogaClass(
         id = DoYogaClassId("123"),
@@ -72,6 +74,7 @@ class BizRepoUpdateTest {
             workMode = DoYogaWorkMode.TEST,
             classRequest = classToUpdate,
         )
+        ctx.addTestPrincipal(userId)
         processor.exec(ctx)
         assertEquals(DoYogaState.FINISHING, ctx.state)
         assertEquals(classToUpdate.id, ctx.classResponse.id)

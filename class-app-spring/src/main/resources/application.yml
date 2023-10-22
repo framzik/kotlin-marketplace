@@ -18,7 +18,7 @@ springdoc:
     urls:
       - name: v1
         url: specs-class-v1.yaml
-prod-repository: ${PROD_REPOSITORY:test}
+prod-repository: ${PROD_REPOSITORY:sql}
 
 sql:
   url: ${SQL_URL:jdbc:postgresql://localhost:54321/easy_yoga_db}

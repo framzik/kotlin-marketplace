@@ -24,6 +24,7 @@ kotlin {
                 implementation(project(":do-yoga-repo-tests"))
                 implementation(project(":do-yoga-repo-stubs"))
                 implementation(project(":do-yoga-repo-in-memory"))
+                implementation(project(":do-yoga-auth"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

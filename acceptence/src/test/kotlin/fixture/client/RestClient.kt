@@ -1,11 +1,22 @@
 package fixture.client
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.request.*
-import io.ktor.http.*
 import fixture.docker.DockerCompose
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.request.accept
+import io.ktor.client.request.headers
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.append
+import io.ktor.http.path
+
+private const val TOKEN =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJkby15b2dhLXVzZXJzIiwiaXNzIjoiU3R1ZHlLb3RsaW4iLCJncm91cHMiOlsiVVNFUiJdfQ.CqshAXdKgquep9sE6U6jb_F5jntus3wCU6SkRSLlxu4"
+
 
 /**
  * Отправка запросов по http/rest
@@ -22,6 +33,7 @@ class RestClient(dockerCompose: DockerCompose) : Client {
             url(url)
             headers {
                 append(HttpHeaders.ContentType, ContentType.Application.Json)
+                append(HttpHeaders.Authorization, "Bearer $TOKEN")
             }
             accept(ContentType.Application.Json)
             setBody(request)

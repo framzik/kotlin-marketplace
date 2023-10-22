@@ -1,10 +1,11 @@
-package validation
+package ru.khrbetov.biz.validation
 
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -31,6 +32,7 @@ fun validationLockCorrect(command: DoYogaCommand, processor: DoYogaClassProcesso
             lock = DoYogaClassLock("123-234-abc-ABC"),
         )
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(DoYogaState.FAILING, ctx.state)
@@ -51,6 +53,7 @@ fun validationLockTrim(command: DoYogaCommand, processor: DoYogaClassProcessor) 
             lock = DoYogaClassLock(" \n\t 123-234-abc-ABC \n\t ")
         ),
     )
+    ctx.addTestPrincipal()
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(DoYogaState.FAILING, ctx.state)

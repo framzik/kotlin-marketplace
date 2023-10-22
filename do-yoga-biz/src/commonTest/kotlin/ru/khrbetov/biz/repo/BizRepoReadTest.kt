@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -55,6 +56,7 @@ class BizRepoReadTest {
                 id = DoYogaClassId("123"),
             ),
         )
+        ctx.addTestPrincipal()
         processor.exec(ctx)
         assertEquals(DoYogaState.FINISHING, ctx.state)
         assertEquals(initClass.id, ctx.classResponse.id)

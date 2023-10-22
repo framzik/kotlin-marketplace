@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.khrbetov.biz.addTestPrincipal
 import ru.khrebtov.biz.DoYogaClassProcessor
 import ru.khrebtov.do_yoga.common.models.DoYogaClass
 import ru.khrebtov.do_yoga.common.models.DoYogaClassId
@@ -17,11 +18,12 @@ import ru.khrebtov.do_yoga.common.models.DoYogaWorkMode
 import ru.khrebtov.do_yoga.ClassRepositoryMock
 import ru.khrebtov.do_yoga.common.DoYogaContext
 import ru.khrebtov.do_yoga.common.DoYogaCorSettings
+import ru.khrebtov.do_yoga.common.models.DoYogaUserId
 import ru.khrebtov.do_yoga.common.repo.DbClassResponse
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizRepoDeleteTest {
-
+    private val userId = DoYogaUserId("321")
     private val command = DoYogaCommand.DELETE
     private val initClass = DoYogaClass(
         id = DoYogaClassId("123"),
@@ -68,6 +70,7 @@ class BizRepoDeleteTest {
             workMode = DoYogaWorkMode.TEST,
             classRequest = classToUpdate,
         )
+        ctx.addTestPrincipal(userId)
         processor.exec(ctx)
         assertEquals(DoYogaState.FINISHING, ctx.state)
         assertTrue { ctx.errors.isEmpty() }
